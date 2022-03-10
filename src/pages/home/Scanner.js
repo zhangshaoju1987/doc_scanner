@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react"
-import { View, StyleSheet, Text, TouchableOpacity, Image, Platform } from "react-native"
+import React, { useRef, useState, useEffect } from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image, Platform } from "react-native";
 import Permissions from 'react-native-permissions';
-import {DocumentCrop,DocumentScanner} from "@zhumi/react-native-document-scanner"
-import SplashScreen from "react-native-splash-screen"
+import {DocumentCrop,DocumentScanner} from "@zhumi/react-native-document-scanner";
+import SplashScreen from "react-native-splash-screen";
 
 export default function App() {
   const pdfScannerElement = useRef(null)
