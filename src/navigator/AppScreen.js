@@ -1,7 +1,7 @@
-import HomeScreen from '../pages/home/home';
+import Scanner from '../pages/home/Scanner';
 
 export default {
-    Home: {
-        screen: HomeScreen
+    Scanner: {
+        screen: Scanner
     }
 }

@@ -1,7 +1,7 @@
 import {createStore,applyMiddleware,compose} from 'redux';
 import thunk from 'redux-thunk';
 import { persistReducer, persistStore } from 'redux-persist';
-import rootReducer from './reducers/rootReducer';
+import rootReducer from './reducer/rootReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createLogger} from 'redux-logger';
 
