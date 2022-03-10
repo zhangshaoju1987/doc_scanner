@@ -215,6 +215,12 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+
+    //新增的rn依赖
+    implementation project(':react-native-svg')
+    implementation project(':react-native-vector-icons')
+
 }
 
 // Run this once to be able to run the application with BUCK
@@ -225,3 +231,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle");
