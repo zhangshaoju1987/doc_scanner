@@ -1,4 +1,4 @@
-import HomeScreen from '../page/home/index';
+import HomeScreen from '../pages/home/home';
 
 export default {
     Home: {
