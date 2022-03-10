@@ -1,61 +1,117 @@
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image, Platform } from "react-native";
 import Permissions from 'react-native-permissions';
-import {DocumentCrop,DocumentScanner} from "@zhumi/react-native-document-scanner";
+import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
+import { Button } from "react-native-paper";
 
-export default function App() {
-  const pdfScannerElement = useRef(null)
-  const [data, setData] = useState({})
-  const [allowed, setAllowed] = useState(false)
+export default class Scanner extends React.Component {
 
-  useEffect(() => {
-    async function requestCamera() {
-      const result = await Permissions.request(Platform.OS === "android" ? "android.permission.CAMERA" : "ios.permission.CAMERA")
-      if (result === "granted") setAllowed(true)
+  constructor(props){
+    super(props);
+    this.pdfScannerElement = React.createRef(null);
+    this.customCrop = React.createRef(null);
+    this.useBase64 = false;
+    this.state = {
+      allowed:false
     }
-    SplashScreen.hide();
-    requestCamera();
-  }, [])
+  }
 
-  function handleOnPressRetry() {
-    setData({})
+  setAllowed(allowed){
+    this.setState({allowed});
   }
-  function doCapture() {
-    pdfScannerElement.current.capture()
+  setPicture(data){
+    const uri = this.useBase64?`data:image/jpeg;base64,${data.initialImage}`:data.initialImage;
+    Image.getSize(uri, 
+      (width, height) => {
+        this.setState({
+          imageWidth: width,
+          imageHeight: height,
+          initialImage: uri,
+          rectangleCoordinates: data.rectangleCoordinates
+        });
+        console.log("width, height",width, height,"rectangleCoordinates=",data.rectangleCoordinates);
+      },
+      (err) => {
+        console.log("Image.getSize失败",err);
+      }
+    );
   }
-  if (!allowed) {
-    return (<View style={styles.permissions}>
-      <Text>请求相机权限</Text>
-    </View>)
+
+  async requestCamera() {
+    const result = await Permissions.request(Platform.OS === "android" ? "android.permission.CAMERA" : "ios.permission.CAMERA");
+    if (result === "granted") this.setAllowed(true);
   }
-  if (data.croppedImage) {
-    console.log("data", data)
+
+  componentDidMount(){
+    SplashScreen.hide();
+    this.requestCamera();
+  }
+
+  doCapture() {
+    this.pdfScannerElement.current.capture()
+  }
+  crop() {
+    this.customCrop.current.crop();
+  }
+  /**
+   * 获取到最后裁剪下来的文档
+   * @param {string} image 
+   * @param {*} newCoordinates 
+   */
+  updateImage(image, newCoordinates) {
+    this.setState({
+      image,
+      rectangleCoordinates: newCoordinates
+    });
+    console.log("获取到文档",image.substring(0,100));
+  }
+  render(){
+
+    if (!this.state.allowed) {
+      return (<View style={styles.permissions}>
+        <Text>请求相机权限</Text>
+      </View>)
+    }
+    if (this.state.initialImage) {
+      return (
+        <React.Fragment>
+          <DocumentCropper
+            updateImage={this.updateImage.bind(this)}
+            rectangleCoordinates={this.state.rectangleCoordinates}
+            initialImage={this.state.initialImage}
+            height={this.state.imageHeight}
+            width={this.state.imageWidth}
+            ref={this.customCrop}
+            overlayColor="rgba(18,190,210, 1)"
+            overlayStrokeColor="rgba(20,190,210, 1)"
+            handlerColor="rgba(20,150,160, 1)"
+            enablePanStrict={false}
+          />
+          <Button icon="camera" mode="contained" onPress={this.crop.bind(this)}>
+              保存
+          </Button>
+        </React.Fragment>
+      )
+    }
+
     return (
       <React.Fragment>
-        <Image source={{ uri: "data:image/png;base64,"+data.initialImage }} style={styles.preview} />
-        <TouchableOpacity onPress={handleOnPressRetry} style={styles.button}>
-          <Text style={styles.buttonText}>重试</Text>
+        <DocumentScanner
+          useBase64={this.useBase64}
+          ref={this.pdfScannerElement}
+          style={styles.scanner}
+          onPictureTaken={this.setPicture.bind(this)}
+          overlayColor="rgba(0,0,0, 0.7)"
+          enableTorch={true}
+          detectionCountBeforeCapture={5}
+        />
+        <TouchableOpacity onPress={this.doCapture.bind(this)} style={styles.button}>
+          <Text style={styles.buttonText}>拍照</Text>
         </TouchableOpacity>
       </React.Fragment>
     )
   }
-  return (
-    <React.Fragment>
-      <DocumentScanner
-        useBase64={true}
-        ref={pdfScannerElement}
-        style={styles.scanner}
-        onPictureTaken={setData}
-        overlayColor="rgba(0,0,0, 0.7)"
-        enableTorch={true}
-        detectionCountBeforeCapture={5}
-      />
-      <TouchableOpacity onPress={doCapture} style={styles.button}>
-        <Text style={styles.buttonText}>拍照</Text>
-      </TouchableOpacity>
-    </React.Fragment>
-  )
 }
 
 const styles = StyleSheet.create({

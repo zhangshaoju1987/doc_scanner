@@ -13,7 +13,7 @@
     "@react-native-community/clipboard": "^1.5.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
-    "@zhumi/react-native-document-scanner": "^2.1.1",
+    "@zhumi/react-native-document-scanner": "^2.1.3",
     "axios": "^0.26.0",
     "react": "17.0.2",
     "react-native": "0.67.3",
