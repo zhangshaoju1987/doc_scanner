@@ -2,42 +2,37 @@ import React from 'react';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import { NavigationContainer,useNavigationContainerRef }  from '@react-navigation/native';
+import { createNativeStackNavigator }   from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 
-import AppScreen from './src/navigator/AppScreen';  //界面
 import NavigationService from './src/navigator/NavigationService';
 import { store, persistor } from './src/redux/store';
-
-const AppNavigator = createStackNavigator(AppScreen, 
-                                                {
-                                                  mode: "card",
-                                                  headerMode: 'none'
-                                                });
-const AppContainer = createAppContainer(AppNavigator);
+import Scanner from './src/pages/home/Scanner';
 
 /**
  * 应用程序入口
  */
-export default class App extends React.Component {
+export default App = () => {
 
-  componentWillUnmount(){
-    this.setState = ()=>{}
-  }
-  render() {
-    return (
-      <Provider store={store}>
-        <PersistGate persistor={persistor} >
-          <PaperProvider theme={DefaultTheme}> 
-            <SafeAreaProvider>
-              <AppContainer ref={navigatorRef => {
-                NavigationService.setTopLevelNavigator(navigatorRef)
-              }} />
-            </SafeAreaProvider>
-          </PaperProvider>
-        </PersistGate>
-      </Provider>
-    );
-  }
+  const Stack = createNativeStackNavigator();
+  //https://reactnavigation.org/docs/navigation-container
+  const navigationRef = useNavigationContainerRef();
+  NavigationService.setTopLevelNavigator(navigationRef);
+
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor} >
+        <PaperProvider theme={DefaultTheme}> 
+          <SafeAreaProvider>
+            <NavigationContainer ref={navigationRef}>
+              <Stack.Navigator initialRouteName="Scanner">
+                <Stack.Screen name="Scanner" component={Scanner} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </PaperProvider>
+      </PersistGate>
+    </Provider>
+  );    
 }
