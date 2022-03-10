@@ -5,7 +5,7 @@
   * @param _topLevelNavigator
   */
  function setTopLevelNavigator(topLevelNavigator) {
-     console.log("navigatorRef=",topLevelNavigator);
+    //console.log("navigatorRef=",topLevelNavigator);
     _topLevelNavigator = topLevelNavigator;
  }
  

@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { persistReducer, persistStore } from 'redux-persist';
 import rootReducer from './reducer/rootReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createLogger} from 'redux-logger';
+//import {createLogger} from 'redux-logger';
 
 const persistConfig =
 {
@@ -15,11 +15,11 @@ const persistConfig =
 /**
  * 所谓中间件:就是在中间环节对数据进行处理并将结果传递下去的一种链式结构
  */
-const loggerMiddleware = createLogger();
+//const loggerMiddleware = createLogger();
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const enhancers = compose(
-	applyMiddleware(thunk, loggerMiddleware),
-	//applyMiddleware(thunk),
+	//applyMiddleware(thunk, loggerMiddleware),
+	applyMiddleware(thunk),
 );
 const store = createStore(persistedReducer, enhancers);
 const persistor = persistStore(store);
