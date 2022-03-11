@@ -4,6 +4,7 @@ import Permissions from 'react-native-permissions';
 import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
 import { Button } from "react-native-paper";
+import NavigationService from "../../navigator/NavigationService";
 
 //console.log("Dimensions.get('window').width",Dimensions.get('window').width);
 export default class Scanner extends React.Component {
@@ -94,6 +95,9 @@ export default class Scanner extends React.Component {
    
     //console.log("成功获取到文档如下\n",image);
   }
+  toMyInvoiceList(){
+    NavigationService.navigate("MyInvoice")
+  }
   render(){
 
     if (!this.state.allowed) {
@@ -108,7 +112,7 @@ export default class Scanner extends React.Component {
       const doc = this.state.document;
       return (
         <React.Fragment>
-          <Image style={{position:"absolute",width:doc.viewWidth/1.5,height:doc.viewHeight/1.5}} source={{ uri: doc.uri}} resizeMode="contain"/>
+          <Image style={{width:doc.viewWidth/1.5,height:doc.viewHeight/1.5,justifyContent:"center",alignItems:"center"}} source={{ uri: doc.uri}} resizeMode="contain"/>
           <Button icon="camera" mode="contained" onPress={this.cancel.bind(this)}>
             继续拍下一张
           </Button>
@@ -151,6 +155,9 @@ export default class Scanner extends React.Component {
           enableTorch={true}
           detectionCountBeforeCapture={15}
         />
+        <Button icon="camera" mode="contained" onPress={this.toMyInvoiceList.bind(this)}>
+          我的文档
+        </Button>
       </React.Fragment>
     )
   }

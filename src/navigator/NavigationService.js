@@ -15,9 +15,9 @@
   * @param routeName
   * @param params
   */
- function navigate(routeName, params) {
+ function navigate(routeName, params = {}) {
     _topLevelNavigator.navigate({
-        routeName,
+        name:routeName,
         params,
     });
  }
