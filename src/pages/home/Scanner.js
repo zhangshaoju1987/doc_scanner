@@ -5,8 +5,7 @@ import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scan
 import SplashScreen from "react-native-splash-screen";
 import { Button } from "react-native-paper";
 
-
-console.log("Dimensions.get('window').width",Dimensions.get('window').width);
+//console.log("Dimensions.get('window').width",Dimensions.get('window').width);
 export default class Scanner extends React.Component {
 
   constructor(props){
@@ -15,7 +14,8 @@ export default class Scanner extends React.Component {
     this.customCrop = React.createRef(null);
     this.useBase64 = false;
     this.state = {
-      allowed:false
+      allowed:false,
+      document:undefined
     }
   }
 
@@ -25,34 +25,15 @@ export default class Scanner extends React.Component {
   onPictureTaken(data){
 
     const uri = this.useBase64?`data:image/jpeg;base64,${data.initialImage}`:data.initialImage;
-    console.log("检测到文档边界:rectangleCoordinates.topLeft=",data.rectangleCoordinates.topLeft);
+    //console.log("检测到文档边界:rectangleCoordinates.topLeft=",data.rectangleCoordinates.topLeft);
     Image.getSize(uri, 
       (width, height) => {
 
-        const scale = 1;
-        const rectangleCoordinates = {
-          "bottomLeft":{
-            "x":data.rectangleCoordinates.bottomLeft.x*scale,
-            "y":data.rectangleCoordinates.bottomLeft.y*scale,
-          },
-          "bottomRight":{
-            "x":data.rectangleCoordinates.bottomRight.x*scale,
-            "y":data.rectangleCoordinates.bottomRight.y*scale,
-          },
-          "topLeft":{
-            "x":data.rectangleCoordinates.topLeft.x*scale,
-            "y":data.rectangleCoordinates.topLeft.y*scale,
-          },
-          "topRight":{
-            "x":data.rectangleCoordinates.topRight.x*scale,
-            "y":data.rectangleCoordinates.topRight.y*scale,
-          }
-        }
         this.setState({
           imageWidth: width,
           imageHeight: height,
           initialImage: uri,
-          rectangleCoordinates
+          rectangleCoordinates:data.rectangleCoordinates
         });        
       },
       (err) => {
@@ -80,7 +61,7 @@ export default class Scanner extends React.Component {
   cancel(){
     this.setState({
       initialImage:undefined,
-      image:undefined
+      document:undefined
     });
   }
   /**
@@ -88,39 +69,57 @@ export default class Scanner extends React.Component {
    * @param {string} image 
    * @param {*} newCoordinates 
    */
-  updateImage(image, newCoordinates) {
-    this.setState({
-      image,
-      rectangleCoordinates: newCoordinates,
-      initialImage:undefined,
-    });
-    console.log("成功获取到文档newCoordinates=",newCoordinates,"\n",image.substring(0,100));
+   onGotDocument(image, newCoordinates) {
+
+    const uri = `data:image/jpeg;base64,${image}`;
+    Image.getSize(uri, 
+      (width, height) => {
+        console.log("文档宽高",width, height);
+        const viewWidth = Dimensions.get("window").width;
+        const scale = viewWidth/width;
+        this.setState({
+          document:{
+            uri:uri,
+            viewWidth,                // 文档展示的宽度
+            viewHeight:height*scale   // 文档展示的高度
+          },
+          rectangleCoordinates:newCoordinates,
+          initialImage:undefined,
+        });     
+      },
+      (err) => {
+        console.log("文档展示失败",err);
+      }
+    );
+   
+    //console.log("成功获取到文档如下\n",image);
   }
   render(){
 
     if (!this.state.allowed) {
       return (
         <View style={styles.permissions}>
-          <Text>请求相机权限</Text>
+          <Text>等待获取相机权限</Text>
         </View>
       )
     }
-    if(this.state.image){
+    if(this.state.document?.uri){
+      //console.log("this.state.document",this.state.document.substring(0,100));
+      const doc = this.state.document;
       return (
-        <View>
-          <Image style={{width:Dimensions.get("window").width}} source={{ uri: `data:image/jpeg;base64,${this.state.image}`}} resizeMode="contain" />
+        <React.Fragment>
+          <Image style={{position:"absolute",width:doc.viewWidth/1.5,height:doc.viewHeight/1.5}} source={{ uri: doc.uri}} resizeMode="contain"/>
           <Button icon="camera" mode="contained" onPress={this.cancel.bind(this)}>
-            重拍
+            继续拍下一张
           </Button>
-        </View>
-        
+        </React.Fragment>
       )
     }
     if (this.state.initialImage) {
       return (
         <React.Fragment>
           <DocumentCropper
-            updateImage={this.updateImage.bind(this)}
+            updateImage={this.onGotDocument.bind(this)}
             rectangleCoordinates={this.state.rectangleCoordinates}
             initialImage={this.state.initialImage}
             height={this.state.imageHeight}
@@ -152,9 +151,6 @@ export default class Scanner extends React.Component {
           enableTorch={true}
           detectionCountBeforeCapture={15}
         />
-        <TouchableOpacity onPress={this.doCapture.bind(this)} style={styles.button}>
-          <Text style={styles.buttonText}>拍照</Text>
-        </TouchableOpacity>
       </React.Fragment>
     )
   }
