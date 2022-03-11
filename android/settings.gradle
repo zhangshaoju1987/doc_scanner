@@ -13,3 +13,6 @@ project(':react-native-screens').projectDir = new File(rootProject.projectDir, '
 
 include ':react-native-splash-screen'
 project(':react-native-splash-screen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splash-screen/android')
+
+include ':opencv310'
+project(':opencv310').projectDir = new File(rootProject.projectDir, '../node_modules/@zhumi/react-native-document-scanner/android/opencv310')
