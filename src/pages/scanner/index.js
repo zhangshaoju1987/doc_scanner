@@ -129,7 +129,7 @@ export default class Scanner extends React.Component {
       const doc = this.state.document;
       return (
         <React.Fragment>
-          <Image style={[{width:doc.viewWidth/1.5,height:doc.viewHeight/1.5},styles.preview]} source={{ uri: doc.uri}} resizeMode="contain"/>
+          <Image style={[{width:doc.viewWidth/1.5,height:doc.viewHeight/1.5,flex:1,marginLeft:(doc.viewWidth-doc.viewWidth/1.5)/2}]} source={{ uri: doc.uri}} resizeMode="contain"/>
           <FAB
             style={styles.cancelFab}
             small={false}
