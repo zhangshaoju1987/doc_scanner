@@ -4,6 +4,8 @@ import Permissions from 'react-native-permissions';
 import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
 import { Colors, FAB, IconButton } from "react-native-paper";
+import { store } from '../../redux/store';
+import * as settingAction from "../../redux/action/settingAction";
 
 //console.log("Dimensions.get('window').width",Dimensions.get('window').width);
 export default class Scanner extends React.Component {
@@ -48,6 +50,7 @@ export default class Scanner extends React.Component {
     if (result === "granted") {
       this.setAllowed(true);
       this.setScanning(true);
+      store.dispatch(settingAction.hideTabBar());
     }
   }
   setScanning(scanning){
@@ -64,12 +67,18 @@ export default class Scanner extends React.Component {
   crop() {
     this.customCrop.current.crop();
   }
+  componentWillUnmount(){
+    this.setState = ()=>{}
+    store.dispatch(settingAction.showTabBar());
+
+  }
   cancel(){
     this.setState({
       initialImage:undefined,
       document:undefined,
       scanning:false
     });
+    store.dispatch(settingAction.showTabBar());
   }
   /**
    * 获取到最后裁剪下来的文档
