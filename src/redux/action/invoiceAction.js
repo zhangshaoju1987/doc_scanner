@@ -12,7 +12,7 @@
   * 删除发票
   * @returns 
   */
- export const hideTabBar = (id) =>
+ export const removeInvoice = (id) =>
  ({
      type: 'REMOVE_INVOICE',
      payload: {id}
