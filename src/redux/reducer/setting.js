@@ -1,7 +1,7 @@
 const initialState =
 {
 	selectedWebcam          : null,
-	
+	tabBarVisiable			:"flex"
 };
 
 const settings = (state = initialState, action) =>
@@ -14,6 +14,15 @@ const settings = (state = initialState, action) =>
 			const iosDeviceToken = state.iosDeviceToken;
 			iosDeviceToken[token] = true;
 			return {...state,iosDeviceToken};
+		}
+		case 'SHOW_TAB_BAR':
+		{
+			return {...state,tabBarVisiable:"flex"};
+		}
+
+		case 'HIDE_TAB_BAR':
+		{
+			return {...state,tabBarVisiable:"none"};
 		}
 		
 		default:
