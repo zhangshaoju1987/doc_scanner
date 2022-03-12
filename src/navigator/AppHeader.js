@@ -10,12 +10,13 @@ export default class AppHeader extends React.Component {
 
     constructor(props){
         super(props);
+        console.log("AppHeader.props",props.options.title);
     }
     render(){
         return (
             <Appbar.Header>
               {this.props.back ? <Appbar.BackAction onPress={()=>{NavigationService.goBack();}} /> : null}
-              <Appbar.Content title={this.props.title||"文档扫描"} />
+              <Appbar.Content title={this.props.options.title||this.props.route.name} />
             </Appbar.Header>
           );
     }

@@ -19,9 +19,9 @@ const DocumentStackTab = () => {
             headerShown:true,
             header: (props)=><AppHeader {...props}/>,
         }}>
-            <MyInvoiceStack.Screen name="Document"      component={Document} />
-            <MyInvoiceStack.Screen name="Invoice"       component={Invoice} />
-            <MyInvoiceStack.Screen name="Certificate"   component={Certificate} />
+            <MyInvoiceStack.Screen name="Document"      options={{title:"我的文档"}}  component={Document} />
+            <MyInvoiceStack.Screen name="Invoice"       options={{title:"我的发票"}}  component={Invoice} />
+            <MyInvoiceStack.Screen name="Certificate"   options={{title:"我的证书"}}  component={Certificate} />
         </MyInvoiceStack.Navigator>
       );
 }
@@ -36,8 +36,8 @@ const AccountStackTab = () => {
             headerShown:true,
             header: (props)=><AppHeader {...props}/>,
         }}>
-            <AccountStack.Screen name="Account"      component={Account} />
-            <AccountStack.Screen name="Settings"     component={Settings} />
+            <AccountStack.Screen name="Account"  options={{title:"账户信息"}}      component={Account} />
+            <AccountStack.Screen name="Settings" options={{title:"应用设置"}}      component={Settings} />
         </AccountStack.Navigator>
       );
 }
