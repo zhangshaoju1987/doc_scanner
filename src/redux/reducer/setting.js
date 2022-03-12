@@ -1,6 +1,5 @@
 const initialState =
 {
-	selectedWebcam          : null,
 	tabBarVisiable			:"flex"
 };
 

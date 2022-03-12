@@ -59,7 +59,7 @@ const ScanStackTab = () => {
 const AppTabScreen = (props)=>{
     // 一级导航主路由
     const Tab = createMaterialBottomTabNavigator();
-    console.log("AppTabScreen.props",props);
+    //console.log("AppTabScreen.props",props);
     return (
         <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465"  barStyle={{display:props.tabBarVisiable||"flex"}}>
             <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 3}}/>
@@ -68,10 +68,10 @@ const AppTabScreen = (props)=>{
         </Tab.Navigator>
     );
 }
-const mapStateToProps = (state) => {
+const mapStateToAppTabScreenProps = (state) => {
     const { setting:{tabBarVisiable} } = state;
-    console.log("store.state=",state);
+    //console.log("redux.store.state=",state);
     return { tabBarVisiable }
 };
 
-export default connect(mapStateToProps)(AppTabScreen);
+export default connect(mapStateToAppTabScreenProps)(AppTabScreen);
