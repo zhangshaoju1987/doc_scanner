@@ -58,9 +58,7 @@ const AppTabScreen = ()=>{
     // 一级导航主路由
     const Tab = createMaterialBottomTabNavigator();
     return (
-        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465" 
-            screenOptions={{}}
-        >
+        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465"  barStyle={{display:"flex"}}>
             <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 3}}/>
             <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
             <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"账户",       tabBarIcon:"account"}} />
