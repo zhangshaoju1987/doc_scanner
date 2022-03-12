@@ -1,11 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, Platform ,Dimensions} from "react-native";
+import { View, StyleSheet, Text, Image, Platform ,Dimensions,Alert} from "react-native";
 import Permissions from 'react-native-permissions';
 import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
 import { Colors, FAB, IconButton } from "react-native-paper";
 import { store } from '../../redux/store';
 import * as settingAction from "../../redux/action/settingAction";
+import * as invoiceAction from "../../redux/action/invoiceAction";
 
 //console.log("Dimensions.get('window').width",Dimensions.get('window').width);
 export default class Scanner extends React.Component {
@@ -95,6 +96,7 @@ export default class Scanner extends React.Component {
         const scale = viewWidth/width;
         this.setState({
           document:{
+            id:new Date().getTime(),
             uri:uri,
             viewWidth,                // 文档展示的宽度
             viewHeight:height*scale   // 文档展示的高度
@@ -114,7 +116,9 @@ export default class Scanner extends React.Component {
    * 保存并识别
    */
   save(){
-    
+    store.dispatch(invoiceAction.addInvoice(this.state.document));
+    Alert.alert("保存成功");
+    this.cancel();
   }
   render(){
 

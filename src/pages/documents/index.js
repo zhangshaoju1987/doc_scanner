@@ -3,12 +3,16 @@ import { Button } from "react-native-paper";
 import Certificate from "./Certificate";
 import Invoice from "./Invoice";
 import NavigationService from "../../navigator/NavigationService";
+import { store } from '../../redux/store';
+import * as settingAction from "../../redux/action/settingAction";
 
 export default class Document extends React.Component{
     constructor(props){
         super(props);
     }
-
+    componentDidMount(){
+        store.dispatch(settingAction.showTabBar());
+    }
     toPage(routerName){
         NavigationService.navigate(routerName);
     }

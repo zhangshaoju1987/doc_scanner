@@ -38,6 +38,8 @@ const AccountStackTab = () => {
         }}>
             <AccountStack.Screen name="Account"  options={{title:"账户信息"}}      component={Account} />
             <AccountStack.Screen name="Settings" options={{title:"应用设置"}}      component={Settings} />
+            <AccountStack.Screen name="Invoice"  options={{title:"我的发票"}}  component={Invoice} />
+
         </AccountStack.Navigator>
       );
 }

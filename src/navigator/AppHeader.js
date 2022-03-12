@@ -10,7 +10,7 @@ export default class AppHeader extends React.Component {
 
     constructor(props){
         super(props);
-        console.log("AppHeader.props",props.options.title);
+        //console.log("AppHeader.props",props.options.title);
     }
     render(){
         return (
