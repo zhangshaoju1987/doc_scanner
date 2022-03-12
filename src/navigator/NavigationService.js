@@ -1,4 +1,4 @@
- let _topLevelNavigator;
+ let _topLevelNavigator = undefined;
  
  /**
   * 设置顶层路由导航
@@ -9,11 +9,10 @@
     _topLevelNavigator = topLevelNavigator;
  }
  
- 
  /**
   * 跳转到指定页面
-  * @param routeName
-  * @param params
+  * @param {string} routeName 
+  * @param {object} params 
   */
  function navigate(routeName, params = {}) {
     _topLevelNavigator.navigate({
@@ -23,7 +22,7 @@
  }
 
  function goBack(){
-     
+    _topLevelNavigator.goBack();
  }
  
  export default {

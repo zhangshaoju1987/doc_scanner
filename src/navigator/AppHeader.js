@@ -1,6 +1,6 @@
 import React from 'react';
 import { Appbar } from 'react-native-paper';
-import NavigationService from '../../navigator/NavigationService';
+import NavigationService from './NavigationService';
 
 /**
  * App头部导航
