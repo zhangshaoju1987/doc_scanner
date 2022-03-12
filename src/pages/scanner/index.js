@@ -81,7 +81,7 @@ export default class Scanner extends React.Component {
     const uri = `data:image/jpeg;base64,${image}`;
     Image.getSize(uri, 
       (width, height) => {
-        console.log("文档宽高",width, height);
+        //console.log("文档宽高",width, height);
         const viewWidth = Dimensions.get("window").width;
         const scale = viewWidth/width;
         this.setState({
