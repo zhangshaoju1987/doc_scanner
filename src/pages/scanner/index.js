@@ -1,10 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image, Platform ,Dimensions} from "react-native";
+import { View, StyleSheet, Text, Image, Platform ,Dimensions} from "react-native";
 import Permissions from 'react-native-permissions';
 import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
-import { Button } from "react-native-paper";
-import NavigationService from "../../navigator/NavigationService";
+import { Colors, FAB, IconButton } from "react-native-paper";
 
 //console.log("Dimensions.get('window').width",Dimensions.get('window').width);
 export default class Scanner extends React.Component {
@@ -16,7 +15,8 @@ export default class Scanner extends React.Component {
     this.useBase64 = false;
     this.state = {
       allowed:false,
-      document:undefined
+      document:undefined,
+      scanning:false,// 是否进入了扫描流程
     }
   }
 
@@ -45,12 +45,17 @@ export default class Scanner extends React.Component {
 
   async requestCamera() {
     const result = await Permissions.request(Platform.OS === "android" ? "android.permission.CAMERA" : "ios.permission.CAMERA");
-    if (result === "granted") this.setAllowed(true);
+    if (result === "granted") {
+      this.setAllowed(true);
+      this.setScanning(true);
+    }
+  }
+  setScanning(scanning){
+    this.setState({scanning})
   }
 
   componentDidMount(){
     SplashScreen.hide();
-    this.requestCamera();
   }
 
   doCapture() {
@@ -62,7 +67,8 @@ export default class Scanner extends React.Component {
   cancel(){
     this.setState({
       initialImage:undefined,
-      document:undefined
+      document:undefined,
+      scanning:false
     });
   }
   /**
@@ -95,11 +101,22 @@ export default class Scanner extends React.Component {
    
     //console.log("成功获取到文档如下\n",image);
   }
-  toMyInvoiceList(){
-    NavigationService.navigate("MyInvoice")
+  /**
+   * 保存并识别
+   */
+  save(){
+    
   }
   render(){
 
+
+    if (!this.state.scanning) {
+      return (
+        <View style={{flex:1,justifyContent: "center",alignItems: "center"}}>
+          <IconButton icon="camera" color={Colors.red500} size={40} onPress={() => {this.requestCamera();}}/>
+        </View>
+      )
+    }
     if (!this.state.allowed) {
       return (
         <View style={styles.permissions}>
@@ -112,10 +129,19 @@ export default class Scanner extends React.Component {
       const doc = this.state.document;
       return (
         <React.Fragment>
-          <Image style={{width:doc.viewWidth/1.5,height:doc.viewHeight/1.5,justifyContent:"center",alignItems:"center"}} source={{ uri: doc.uri}} resizeMode="contain"/>
-          <Button icon="camera" mode="contained" onPress={this.cancel.bind(this)}>
-            继续拍下一张
-          </Button>
+          <Image style={[{width:doc.viewWidth/1.5,height:doc.viewHeight/1.5},styles.preview]} source={{ uri: doc.uri}} resizeMode="contain"/>
+          <FAB
+            style={styles.cancelFab}
+            small={false}
+            icon="keyboard-return"
+            onPress={() => {this.cancel();}}
+          />
+          <FAB
+            style={styles.saveFab}
+            small={false}
+            icon="content-save-all"
+            onPress={() => {this.save();}}
+          />
         </React.Fragment>
       )
     }
@@ -134,56 +160,85 @@ export default class Scanner extends React.Component {
             handlerColor="rgba(20,150,160, 1)"
             enablePanStrict={false}
           />
-          <Button icon="camera" mode="contained" onPress={this.crop.bind(this)}>
-              保存
-          </Button>
-          <Button icon="camera" mode="contained" onPress={this.cancel.bind(this)}>
-              取消
-          </Button>
+           <FAB
+            style={styles.cancelFab}
+            small={false}
+            icon="keyboard-return"
+            onPress={() => {this.cancel();}}
+          />
+          <FAB
+            style={styles.cropFab}
+            small={false}
+            icon="scissors-cutting"
+            onPress={() => {this.crop();}}
+          />
         </React.Fragment>
       )
     }
 
     return (
-      <React.Fragment>
-        <DocumentScanner
-          useBase64={this.useBase64}
-          ref={this.pdfScannerElement}
-          style={styles.scanner}
-          onPictureTaken={this.onPictureTaken.bind(this)}
-          overlayColor="rgba(0,0,0, 0.7)"
-          enableTorch={true}
-          detectionCountBeforeCapture={15}
-        />
-        <Button icon="camera" mode="contained" onPress={this.toMyInvoiceList.bind(this)}>
-          我的文档
-        </Button>
-      </React.Fragment>
+        <React.Fragment>
+          <DocumentScanner
+            useBase64={this.useBase64}
+            ref={this.pdfScannerElement}
+            style={styles.scanner}
+            onPictureTaken={this.onPictureTaken.bind(this)}
+            overlayColor="rgba(0,0,0, 0.7)"
+            enableTorch={true}
+            detectionCountBeforeCapture={15}
+          />
+          <FAB
+            style={styles.returnBackFab}
+            small={false}
+            icon="keyboard-return"
+            onPress={() => {this.cancel();}}
+          />
+        </React.Fragment>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  scanner: {
-    flex: 1,
-    aspectRatio: undefined
-  },
-  button: {
-    alignSelf: "center",
-    position: "absolute",
-    bottom: 32,
-  },
-  buttonText: {
-    backgroundColor: "rgba(245, 252, 255, 0.7)",
-    fontSize: 32,
-  },
-  preview: {
-    flex: 1,
-    width: "100%",
+  preview:{
+    justifyContent:"center",
+    alignItems:"center",
+    flex: 1
   },
   permissions: {
     flex:1,
     justifyContent: "center",
     alignItems: "center"
-  }
+  },
+  scanner: {
+    flex: 1,
+  },
+  returnBackFab: {
+    position: 'absolute',
+    backgroundColor:Colors.amber100,
+    margin: 32,
+    right: "38%",
+    bottom: 0,
+  },
+  cancelFab:{
+    position: 'absolute',
+    backgroundColor:Colors.amber100,
+    margin: 32,
+    left: "22%",
+    bottom: 0,
+  },
+  cropFab:{
+    position: 'absolute',
+    backgroundColor:Colors.amber100,
+    margin: 32,
+    right: "22%",
+    bottom: 0,
+  },
+  saveFab:{
+    position: 'absolute',
+    backgroundColor:Colors.amber100,
+    margin: 32,
+    right: "22%",
+    bottom: 0,
+  },
+  
 })

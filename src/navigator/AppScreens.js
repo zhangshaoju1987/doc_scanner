@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator }   from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
-import Scanner from '../pages/home/Scanner';
+import Scanner from '../pages/scanner';
 import AppHeader from "./AppHeader";
 import Account, { Settings } from '../pages/account';
 import Document,{Certificate,Invoice} from "../pages/documents";
@@ -58,13 +58,11 @@ const AppTabScreen = ()=>{
     // 一级导航主路由
     const Tab = createMaterialBottomTabNavigator();
     return (
-        <Tab.Navigator initialRouteName='DocumentStackTab' activeColor="#f0edf6" inactiveColor="#3e2465" 
-            screenOptions={{
-                header: (props)=><AppHeader {...props}/>,
-            }}
+        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465" 
+            screenOptions={{}}
         >
-            <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home"}}/>
-            <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"扫描",       tabBarIcon:"camera"}}/>
+            <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 3}}/>
+            <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
             <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"账户",       tabBarIcon:"account"}} />
         </Tab.Navigator>
     );
