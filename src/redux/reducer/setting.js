@@ -4,7 +4,7 @@ const initialState =
 	tabBarVisiable			:"flex"
 };
 
-const settings = (state = initialState, action) =>
+const setting = (state = initialState, action) =>
 {
 	switch (action.type)
 	{
@@ -30,4 +30,4 @@ const settings = (state = initialState, action) =>
 	}
 };
 
-export default settings;
+export default setting;

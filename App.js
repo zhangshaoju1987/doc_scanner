@@ -7,13 +7,12 @@ import { Provider } from 'react-redux';
 
 import NavigationService from './src/navigator/NavigationService';
 import { store, persistor } from './src/redux/store';
-import {AppStackScreen,AppTabScreen} from './src/navigator/AppScreens';
+import AppTabScreen from './src/navigator/AppScreens';
 /**
  * 应用程序入口
  */
 export default App = () => {
 
-  const navType = "tab";
   //https://reactnavigation.org/docs/navigation-container
   const navigationRef = useNavigationContainerRef();
   NavigationService.setTopLevelNavigator(navigationRef);
@@ -23,8 +22,7 @@ export default App = () => {
         <PaperProvider theme={DefaultTheme}> 
           <SafeAreaProvider>
             <NavigationContainer ref={navigationRef}>
-              {navType == "tab" && <AppTabScreen/>}
-              {navType == "stack" && <AppStackScreen/>}
+              <AppTabScreen/>
             </NavigationContainer>
           </SafeAreaProvider>
         </PaperProvider>

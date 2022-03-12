@@ -1,6 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator }   from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { connect } from 'react-redux';
+
 
 import Scanner from '../pages/scanner';
 import AppHeader from "./AppHeader";
@@ -54,16 +56,22 @@ const ScanStackTab = () => {
 }
 
 
-const AppTabScreen = ()=>{
+const AppTabScreen = (props)=>{
     // 一级导航主路由
     const Tab = createMaterialBottomTabNavigator();
+    console.log("AppTabScreen.props",props);
     return (
-        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465"  barStyle={{display:"flex"}}>
+        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465"  barStyle={{display:props.tabBarVisiable||"flex"}}>
             <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 3}}/>
             <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
             <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"账户",       tabBarIcon:"account"}} />
         </Tab.Navigator>
     );
 }
+const mapStateToProps = (state) => {
+    const { setting:{tabBarVisiable} } = state;
+    console.log("store.state=",state);
+    return { tabBarVisiable }
+};
 
-export {AppTabScreen};
+export default connect(mapStateToProps)(AppTabScreen);
