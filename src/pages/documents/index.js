@@ -17,7 +17,6 @@ export default class Document extends React.Component{
             <React.Fragment>
                 <Button mode="contained" onPress={this.toPage.bind(this,"Invoice")} style={{margin:20}}>我的发票</Button>
                 <Button mode="contained" onPress={this.toPage.bind(this,"Certificate")} style={{margin:20}}>我的证件</Button>
-                <Button mode="contained" onPress={this.toPage.bind(this,"Settings")} style={{margin:20}}>设置</Button>
             </React.Fragment>
         )
     }
