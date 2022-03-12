@@ -4,22 +4,27 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 
 import Scanner from '../pages/home/Scanner';
 import MyInvoice from '../pages/invoice/MyInvoice';
-import AppHeader from "../components/AppHeader";
-const StackAppScreens = ()=>{
+import AppHeader from "../components/headers/AppHeader";
+import Settings from '../pages/Settings';
+const AppStackScreen = ()=>{
     const Stack = createNativeStackNavigator();
     return (
-        <Stack.Navigator initialRouteName='MyInvoice' screenOptions={
-            {
+        <Stack.Navigator initialRouteName='MyInvoice' 
+            screenOptions={{
                 header: (props)=><AppHeader {...props}/>,
-            }
-        }>
+            }}
+        >
             <Stack.Screen name="Scanner" component={Scanner} />
             <Stack.Screen name="MyInvoice" component={MyInvoice}/>
         </Stack.Navigator>
     );
 }
 
-const TabAppScreens = ()=>{
+
+
+
+
+const AppTabScreen = ()=>{
     const Tab = createMaterialBottomTabNavigator();
     return (
         <Tab.Navigator initialRouteName='MyInvoice' activeColor="#f0edf6" inactiveColor="#3e2465" 
@@ -27,10 +32,11 @@ const TabAppScreens = ()=>{
                 header: (props)=><AppHeader {...props}/>,
             }}
         >
-          <Tab.Screen name="MyInvoice" component={MyInvoice} />
-          <Tab.Screen name="Scanner" component={Scanner} />
+            <Tab.Screen name="MyInvoice"  component={MyInvoice} />
+            <Tab.Screen name="Scanner"    component={Scanner} />
+            <Tab.Screen name="Setting"    component={Settings} />
         </Tab.Navigator>
     );
 }
 
-export {StackAppScreens,TabAppScreens};
+export {AppStackScreen,AppTabScreen};

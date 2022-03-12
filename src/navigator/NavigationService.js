@@ -21,8 +21,13 @@
         params,
     });
  }
+
+ function goBack(){
+     
+ }
  
  export default {
      setTopLevelNavigator,
      navigate,
+     goBack,
  }
