@@ -7,7 +7,7 @@ import axios from "axios";
 async function vatInvoice(image){
     
     try{
-        const resp = await axios.post("http://192.168.1.2:8000/vat",image);
+        const resp = await axios.post("https://signaling1001.msokd.com:50050/ocr/vatInvoice",{image});
         return resp.data;
     }catch(err){
         console.log("ocr识别异常",err);

@@ -18,7 +18,6 @@
     "@react-navigation/native-stack": "^6.5.0",
     "@zhumi/react-native-document-scanner": "^2.1.7",
     "axios": "^0.26.0",
-    "baidu-aip-sdk": "^4.15.8",
     "express": "^4.17.3",
     "https": "^1.0.0",
     "react": "17.0.2",
