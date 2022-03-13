@@ -19,6 +19,8 @@
     "@zhumi/react-native-document-scanner": "^2.1.7",
     "axios": "^0.26.0",
     "baidu-aip-sdk": "^4.15.8",
+    "express": "^4.17.3",
+    "https": "^1.0.0",
     "react": "17.0.2",
     "react-native": "0.67.3",
     "react-native-gesture-handler": "^2.3.1",

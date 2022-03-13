@@ -198,7 +198,7 @@ export default class Scanner extends React.Component {
             onPictureTaken={this.onPictureTaken.bind(this)}
             overlayColor="rgba(0,0,0, 0.7)"
             enableTorch={true}
-            detectionCountBeforeCapture={15}
+            detectionCountBeforeCapture={2}
           />
           <FAB
             style={styles.returnBackFab}
