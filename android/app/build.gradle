@@ -221,7 +221,7 @@ dependencies {
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
-
+    implementation project(':react-native-fs')
 
 }
 

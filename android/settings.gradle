@@ -16,3 +16,6 @@ project(':react-native-splash-screen').projectDir = new File(rootProject.project
 
 include ':opencv310'
 project(':opencv310').projectDir = new File(rootProject.projectDir, '../node_modules/@zhumi/react-native-document-scanner/android/opencv310')
+
+include ':react-native-fs'
+project(':react-native-fs').projectDir = new File(settingsDir, '../node_modules/react-native-fs/android')
