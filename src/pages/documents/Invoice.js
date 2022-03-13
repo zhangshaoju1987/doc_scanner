@@ -1,6 +1,6 @@
 import React from "react";
-import {View,Image,ScrollView} from "react-native";
-import { Button, Colors, Divider, IconButton, Modal, Portal,Text } from "react-native-paper";
+import {View,Image,ScrollView,StyleSheet} from "react-native";
+import { Button, Colors, Divider, FAB, Portal,Text } from "react-native-paper";
 import { connect } from "react-redux";
 import {store} from "../../redux/store";
 import * as invoiceAction from "../../redux/action/invoiceAction";
@@ -44,19 +44,18 @@ class Invoice extends React.Component{
                 {
                 this.state.ocrResult &&
                 <Portal>
-                    <ScrollView>
-                        <Text>
+                    <ScrollView style={{marginTop:60,marginBottom:60}}>
+                        <Text >
                             {this.state.ocrResult}
                         </Text>
                     </ScrollView>
-                    <IconButton
-                        icon="close-circle"
-                        color={Colors.red500}
-                        size={20}
+                    <FAB
+                        style={styles.closeFab}
+                        small={false}
+                        icon="keyboard-return"
                         onPress={() => {this.setState({ocrResult:undefined})}}
                     />
                 </Portal>
-
                 }
                 
             </View>
@@ -70,4 +69,13 @@ const mapStateToProps = (state)=>{
     return {invoiceList};
 }
 
+
+const styles = StyleSheet.create({
+    closeFab: {
+      position: 'absolute',
+      margin: 32,
+      right: "38%",
+      bottom: 40,
+  }
+});
 export default connect(mapStateToProps)(Invoice);
