@@ -21,6 +21,17 @@ const invoice = (state = initialState, action) =>
             const newList = invoiceList.filter((item)=>item.id != id);
 			return {...state,invoiceList:newList};
 		}
+		case 'ADD_OCR_RESULT':
+		{
+			const {id,ocrInfo} = action.payload;
+            const {invoiceList} = state;
+            const invoice = invoiceList.find((item)=>item.id == id);
+			if(invoice){
+				invoice.ocrInfo = ocrInfo;
+			}
+			return {...state,invoiceList};
+		}
+		
 		
 		default:
 			return state;

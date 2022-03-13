@@ -17,9 +17,20 @@ class Invoice extends React.Component{
     }
     ocr(doc){
         console.log("ocr识别",doc.id,doc.viewHeight,doc.viewWidth);
+        if(doc.ocrInfo){
+            this.setState({ocrResult:JSON.stringify(doc.ocrInfo,null,2)});
+            return;
+        }
+        this.setState({recoginzing:true})
         const image = doc.uri.replace("data:image/jpeg;base64,","");
-        OcrClient.vatInvoice(image).then((resp)=>{
-            this.setState({ocrResult:JSON.stringify(resp,null,2)});
+        OcrClient.vatInvoice(image)
+        .then((resp)=>{
+            this.setState({ocrResult:JSON.stringify(resp,null,2),recoginzing:false});
+            store.dispatch(invoiceAction.addOcrResult(doc.id,resp));
+        })
+        .catch(err=>{
+            console.log("识别出现错误",err);
+            this.setState({ocrResult:undefined,recoginzing:false});
         });
     }
     remove(id){
@@ -34,7 +45,7 @@ class Invoice extends React.Component{
                     this.props.invoiceList.map((item)=>(
                     <View key={item.id}>
                         <Image style={{width:item.viewWidth*0.2,height:item.viewHeight*0.2}} source={{uri:item.uri}} />
-                        <Button mode="contained" color={Colors.brown200} onPress={()=>{this.ocr(item)}}>发票识别</Button>
+                        <Button mode="contained" disabled={this.state.recoginzing} loading={this.state.recoginzing} color={Colors.brown200} onPress={()=>{this.ocr(item)}}>发票识别</Button>
                         <Button mode="contained" color={Colors.blue50} onPress={()=>{this.remove(item.id)}}>删除发票</Button>
                         <Divider/>
                     </View>
@@ -44,7 +55,7 @@ class Invoice extends React.Component{
                 {
                 this.state.ocrResult &&
                 <Portal>
-                    <ScrollView style={{marginTop:60,marginBottom:60}}>
+                    <ScrollView style={{marginTop:60,marginBottom:60,backgroundColor:"white"}}>
                         <Text >
                             {this.state.ocrResult}
                         </Text>
