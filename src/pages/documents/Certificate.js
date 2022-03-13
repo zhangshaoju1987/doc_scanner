@@ -23,7 +23,7 @@ export default Certificate = () => {
 
   return (
     <BottomNavigation
-      style={{display:"flex"}}
+      style={{display:"flex",overflow:"hidden"}}
       barStyle={{ height: 80,
         backgroundColor: '#694fad',
         justifyContent: 'center',}}

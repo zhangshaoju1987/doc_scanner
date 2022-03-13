@@ -75,11 +75,10 @@ const AppTabScreen = (props)=>{
     // 一级导航主路由
     const Tab = createMaterialBottomTabNavigator();
     //console.log("AppTabScreen.props",props);
-    const height = props.tabBarVisiable=="flex"?54:54;
-    console.log("height=",height);
     return (
         <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465" 
-                barStyle={{justifyContent: 'center', backgroundColor: '#004fad',height}}>
+                style={{}}
+                barStyle={{justifyContent: 'center', backgroundColor: '#004fad',height:64}}>
             <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 3}}/>
             <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
             <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"账户",       tabBarIcon:"account"}} />
