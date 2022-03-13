@@ -55,7 +55,7 @@ class Invoice extends React.Component{
                 {
                 this.state.ocrResult &&
                 <Portal>
-                    <ScrollView style={{marginTop:60,marginBottom:60,backgroundColor:"white"}}>
+                    <ScrollView style={{marginTop:this.props.headerHeight,marginBottom:56,backgroundColor:"white"}}>
                         <Text >
                             {this.state.ocrResult}
                         </Text>
@@ -75,9 +75,9 @@ class Invoice extends React.Component{
 }
 
 const mapStateToProps = (state)=>{
-    const {invoice:{invoiceList}} = state;
-    console.log("检测到",invoiceList.length,"张发票");
-    return {invoiceList};
+    const {invoice:{invoiceList},setting:{headerHeight}} = state;
+    //console.log("检测到",invoiceList.length,"张发票");
+    return {invoiceList,headerHeight};
 }
 
 

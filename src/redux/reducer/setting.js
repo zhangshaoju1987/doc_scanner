@@ -1,6 +1,7 @@
 const initialState =
 {
-	tabBarVisiable			:"flex"
+	tabBarVisiable			:"flex",
+	headerHeight				:56
 };
 
 const setting = (state = initialState, action) =>
@@ -22,6 +23,12 @@ const setting = (state = initialState, action) =>
 		case 'HIDE_TAB_BAR':
 		{
 			return {...state,tabBarVisiable:"none"};
+		}
+
+		case 'SET_HEADER_HEIGHT':
+		{
+			const {headerHeight} = action.payload;
+			return {...state,headerHeight};
 		}
 		
 		default:

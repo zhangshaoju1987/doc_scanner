@@ -17,3 +17,13 @@ export const hideTabBar = () =>
 	type: 'HIDE_TAB_BAR',
 	payload: ""
 });
+
+/**
+ * 设置头部高度
+ * @returns 
+ */
+ export const setHeaderHeight = (headerHeight) =>
+ ({
+	 type: 'SET_HEADER_HEIGHT',
+	 payload: {headerHeight:headerHeight}
+ });

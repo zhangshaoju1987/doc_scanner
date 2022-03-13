@@ -2,7 +2,10 @@ import React from 'react';
 import { createNativeStackNavigator }   from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { connect } from 'react-redux';
-
+import { getDefaultHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {store} from "../redux/store";
+import * as settingAction from "../redux/action/settingAction";
 
 import Scanner from '../pages/scanner';
 import AppHeader from "./AppHeader";
@@ -10,10 +13,16 @@ import Account, { Settings } from '../pages/account';
 import Document,{Certificate,Invoice} from "../pages/documents";
 
 
+
 // 二级明细路由(文档)
 // https://reactnavigation.org/docs/tab-based-navigation  A native stack navigator for each tab​
 const DocumentStackTab = () => {
     const MyInvoiceStack = createNativeStackNavigator();
+    // 默认的头部导航栏高度
+    const frame = useSafeAreaFrame();
+    const insets = useSafeAreaInsets();
+    const headerHeight = getDefaultHeaderHeight(frame, false, insets.top);
+    store.dispatch(settingAction.setHeaderHeight(headerHeight));
     return (
         <MyInvoiceStack.Navigator initialRouteName='Document' screenOptions={{
             headerShown:true,
@@ -31,14 +40,18 @@ const DocumentStackTab = () => {
 // https://reactnavigation.org/docs/tab-based-navigation  A native stack navigator for each tab​
 const AccountStackTab = () => {
     const AccountStack = createNativeStackNavigator();
+    const frame = useSafeAreaFrame();
+    const insets = useSafeAreaInsets();
+    const headerHeight = getDefaultHeaderHeight(frame, false, insets.top);
+    store.dispatch(settingAction.setHeaderHeight(headerHeight));
     return (
         <AccountStack.Navigator initialRouteName='Account' screenOptions={{
             headerShown:true,
             header: (props)=><AppHeader {...props}/>,
         }}>
-            <AccountStack.Screen name="Account"  options={{title:"账户信息"}}      component={Account} />
-            <AccountStack.Screen name="Settings" options={{title:"应用设置"}}      component={Settings} />
-            <AccountStack.Screen name="Invoice"  options={{title:"我的发票"}}  component={Invoice} />
+            <AccountStack.Screen name="Account"  options={{title:"账户信息"}}   component={Account} />
+            <AccountStack.Screen name="Settings" options={{title:"应用设置"}}   component={Settings} />
+            <AccountStack.Screen name="Invoice"  options={{title:"我的发票"}}   component={Invoice} />
 
         </AccountStack.Navigator>
       );
