@@ -55,7 +55,7 @@ class Invoice extends React.Component{
                 {
                 this.state.ocrResult &&
                 <Portal>
-                    <ScrollView style={{marginTop:this.props.headerHeight,marginBottom:56,backgroundColor:"white"}}>
+                    <ScrollView style={{marginTop:this.props.headerHeight,marginBottom:54,backgroundColor:"white"}}>
                         <Text >
                             {this.state.ocrResult}
                         </Text>

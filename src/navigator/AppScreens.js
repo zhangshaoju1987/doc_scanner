@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator }   from '@react-navigation/native-stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialBottomTabNavigator  } from '@react-navigation/material-bottom-tabs';
 import { connect } from 'react-redux';
 import { getDefaultHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -76,7 +76,7 @@ const AppTabScreen = (props)=>{
     const Tab = createMaterialBottomTabNavigator();
     //console.log("AppTabScreen.props",props);
     return (
-        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465"  barStyle={{display:props.tabBarVisiable||"flex"}}>
+        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465"  barStyle={{display:props.tabBarVisiable}}>
             <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 3}}/>
             <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
             <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"账户",       tabBarIcon:"account"}} />
