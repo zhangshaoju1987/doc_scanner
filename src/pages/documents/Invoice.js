@@ -17,7 +17,10 @@ import { Touchable } from "../../components/Touchable";
 class Invoice extends React.Component{
     constructor(props){
         super(props);
-        this.state = {isVisible:false}
+        this.state = {
+            isVisible:false,
+            recoginzing:{}
+        }
     }
     ocr(doc){
         console.log("ocr识别",doc.id,doc.viewHeight,doc.viewWidth);
@@ -25,11 +28,14 @@ class Invoice extends React.Component{
             this.setState({ocrResult:JSON.stringify(doc.ocrInfo,null,2)});
             return;
         }
-        this.setState({recoginzing:true})
+        const recoginzing = this.state.recoginzing;
+        recoginzing[doc.id] = true;
+        this.setState({recoginzing})
         const image = doc.uri.replace("data:image/jpeg;base64,","");
         OcrClient.vatInvoice(image)
         .then((resp)=>{
-            this.setState({recoginzing:false});
+            recoginzing[doc.id] = false;
+            this.setState({recoginzing})
             if(resp.result.ocrInfo.error_code){
                 Alert.alert("识别失败",resp.result.ocrInfo.error_msg);
                 store.dispatch(invoiceAction.addOcrResult(doc.id,undefined));
@@ -40,7 +46,8 @@ class Invoice extends React.Component{
         })
         .catch(err=>{
             console.log("识别出现错误",err);
-            this.setState({ocrResult:undefined,recoginzing:false});
+            recoginzing[doc.id] = false;
+            this.setState({ocrResult:undefined,recoginzing});
         });
     }
     remove(id){
@@ -68,7 +75,7 @@ class Invoice extends React.Component{
                             </View>
                         
                         <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
-                            <Button style={{margin:5,width:120}} mode="contained" disabled={this.state.recoginzing} loading={this.state.recoginzing} color={Colors.green600} onPress={()=>{this.ocr(item)}}>
+                            <Button style={{margin:5,width:120}} mode="contained" disabled={this.state.recoginzing[item.id]} loading={this.state.recoginzing[item.id]} color={Colors.green600} onPress={()=>{this.ocr(item)}}>
                                 {item.ocrInfo?"发票信息":"识别发票"}
                             </Button>
                             <Button style={{margin:5,width:120}} mode="contained" color={Colors.red900} onPress={()=>{this.remove(item.id)}}>删除发票</Button>
