@@ -70,7 +70,7 @@ class Invoice extends React.Component{
                     <View key={item.id}>
                             <View  style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
                                 <Touchable onPress={()=>{this.setState({isVisible:true,imageIdxToShow:idx})}}>
-                                    <Image style={{width:item.viewWidth*0.25,height:item.viewHeight*0.25}} source={{uri:item.uri}} />
+                                    <Image style={{width:item.viewWidth*0.1,height:item.viewHeight*0.1}} source={{uri:item.uri}} />
                                 </Touchable>  
                             </View>
                         
