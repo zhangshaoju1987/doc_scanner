@@ -1,5 +1,5 @@
 import React from "react";
-import {View,Image,ScrollView,StyleSheet} from "react-native";
+import {View,Image,ScrollView,StyleSheet,Alert} from "react-native";
 import { Button, Colors, Divider, FAB, Portal,Text } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
@@ -29,7 +29,13 @@ class Invoice extends React.Component{
         const image = doc.uri.replace("data:image/jpeg;base64,","");
         OcrClient.vatInvoice(image)
         .then((resp)=>{
-            this.setState({ocrResult:JSON.stringify(resp,null,2),recoginzing:false});
+            this.setState({recoginzing:false});
+            if(resp.result.ocrInfo.error_code){
+                Alert.alert("识别失败",resp.result.ocrInfo.error_msg);
+                store.dispatch(invoiceAction.addOcrResult(doc.id,undefined));
+                return;
+            }
+            this.setState({ocrResult:JSON.stringify(resp.result.ocrInfo,null,2)});
             store.dispatch(invoiceAction.addOcrResult(doc.id,resp));
         })
         .catch(err=>{
