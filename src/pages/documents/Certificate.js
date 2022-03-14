@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 
-const MusicRoute = () => <Text>Music</Text>;
+const MusicRoute = () => <Text>测试页面1</Text>;
 
-const AlbumsRoute = () => <Text>Albums</Text>;
+const AlbumsRoute = () => <Text>测试页面2</Text>;
 
-const RecentsRoute = () => <Text>Recents</Text>;
+const RecentsRoute = () => <Text>测试页面3</Text>;
 
 export default Certificate = () => {
   const [index, setIndex] = React.useState(0);
