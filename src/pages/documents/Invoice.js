@@ -2,9 +2,13 @@ import React from "react";
 import {View,Image,ScrollView,StyleSheet} from "react-native";
 import { Button, Colors, Divider, FAB, Portal,Text } from "react-native-paper";
 import { connect } from "react-redux";
+import ImageView from "react-native-image-viewing";
+
+
 import {store} from "../../redux/store";
 import * as invoiceAction from "../../redux/action/invoiceAction";
 import OcrClient from "../../clients/OcrClient";
+import { Touchable } from "../../components/Touchable";
 
 
 /**
@@ -13,7 +17,7 @@ import OcrClient from "../../clients/OcrClient";
 class Invoice extends React.Component{
     constructor(props){
         super(props);
-        this.state = {}
+        this.state = {isVisible:false}
     }
     ocr(doc){
         console.log("ocr识别",doc.id,doc.viewHeight,doc.viewWidth);
@@ -36,17 +40,33 @@ class Invoice extends React.Component{
     remove(id){
         store.dispatch(invoiceAction.removeInvoice(id));
     }
+    componentDidMount(){
+        const images = [];
+        this.props.invoiceList.forEach(element => {
+            images.push({uri:element.uri});
+        });
+        this.setState({images});
+    }
     render(){
 
         return (
             <View>
                 <ScrollView>
                 {
-                    this.props.invoiceList.map((item)=>(
+                    this.props.invoiceList.map((item,idx)=>(
                     <View key={item.id}>
-                        <Image style={{width:item.viewWidth*0.2,height:item.viewHeight*0.2}} source={{uri:item.uri}} />
-                        <Button mode="contained" disabled={this.state.recoginzing} loading={this.state.recoginzing} color={Colors.brown200} onPress={()=>{this.ocr(item)}}>发票识别</Button>
-                        <Button mode="contained" color={Colors.blue50} onPress={()=>{this.remove(item.id)}}>删除发票</Button>
+                            <View  style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
+                                <Touchable onPress={()=>{this.setState({isVisible:true,imageIdxToShow:idx})}}>
+                                    <Image style={{width:item.viewWidth*0.25,height:item.viewHeight*0.25}} source={{uri:item.uri}} />
+                                </Touchable>  
+                            </View>
+                        
+                        <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
+                            <Button style={{margin:5,width:120}} mode="contained" disabled={this.state.recoginzing} loading={this.state.recoginzing} color={Colors.green600} onPress={()=>{this.ocr(item)}}>
+                                {item.ocrInfo?"发票信息":"识别发票"}
+                            </Button>
+                            <Button style={{margin:5,width:120}} mode="contained" color={Colors.red900} onPress={()=>{this.remove(item.id)}}>删除发票</Button>
+                        </View>
                         <Divider/>
                     </View>
                     ))
@@ -55,7 +75,7 @@ class Invoice extends React.Component{
                 {
                 this.state.ocrResult &&
                 <Portal>
-                    <ScrollView style={{marginTop:this.props.headerHeight,marginBottom:54,backgroundColor:"white"}}>
+                    <ScrollView style={{marginTop:this.props.headerHeight,marginBottom:this.props.bottomHeight,backgroundColor:"white"}}>
                         <Text >
                             {this.state.ocrResult}
                         </Text>
@@ -68,16 +88,25 @@ class Invoice extends React.Component{
                     />
                 </Portal>
                 }
-                
+                <Portal>
+                <ImageView
+                    images={this.state.images}
+                    imageIndex={this.state.imageIdxToShow}
+                    visible={this.state.isVisible}
+                    onRequestClose={() => {
+                        this.setState({isVisible:false})
+                    }}
+                    />
+                </Portal>
             </View>
         );
     }
 }
 
 const mapStateToProps = (state)=>{
-    const {invoice:{invoiceList},setting:{headerHeight}} = state;
+    const {invoice:{invoiceList},setting:{headerHeight,bottomHeight}} = state;
     //console.log("检测到",invoiceList.length,"张发票");
-    return {invoiceList,headerHeight};
+    return {invoiceList,headerHeight,bottomHeight};
 }
 
 

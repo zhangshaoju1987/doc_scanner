@@ -13,7 +13,6 @@ import Account, { Settings } from '../pages/account';
 import Document,{Certificate,Invoice} from "../pages/documents";
 
 
-
 // 二级明细路由(文档)
 // https://reactnavigation.org/docs/tab-based-navigation  A native stack navigator for each tab​
 const DocumentStackTab = () => {
@@ -78,17 +77,17 @@ const AppTabScreen = (props)=>{
     return (
         <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465" 
                 style={{}}
-                barStyle={{justifyContent: 'center', backgroundColor: '#004fad',height:64}}>
-            <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 3}}/>
+                barStyle={{justifyContent: 'center', backgroundColor: '#004fad',height:props.bottomHeight}}>
+            <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 2}}/>
             <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
             <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"账户",       tabBarIcon:"account"}} />
         </Tab.Navigator>
     );
 }
 const mapStateToAppTabScreenProps = (state) => {
-    const { setting:{tabBarVisiable} } = state;
-    console.log("redux.store.state.setting=",tabBarVisiable);
-    return { tabBarVisiable }
+    const { setting:{tabBarVisiable,bottomHeight} } = state;
+    //console.log("redux.store.state.setting=",state.setting);
+    return { tabBarVisiable,bottomHeight }
 };
 
 export default connect(mapStateToAppTabScreenProps)(AppTabScreen);
