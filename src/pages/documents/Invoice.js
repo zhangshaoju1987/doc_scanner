@@ -42,7 +42,7 @@ class Invoice extends React.Component{
                 return;
             }
             this.setState({ocrResult:JSON.stringify(resp.result.ocrInfo,null,2)});
-            store.dispatch(invoiceAction.addOcrResult(doc.id,resp));
+            store.dispatch(invoiceAction.addOcrResult(doc.id,resp.result.ocrInfo));
         })
         .catch(err=>{
             console.log("识别出现错误",err);
