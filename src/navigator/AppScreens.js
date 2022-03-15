@@ -48,7 +48,7 @@ const AccountStackTab = () => {
             headerShown:true,
             header: (props)=><AppHeader {...props}/>,
         }}>
-            <AccountStack.Screen name="Account"  options={{title:"账户信息"}}   component={Account} />
+            <AccountStack.Screen name="Account"  options={{title:"网络"}}   component={Account} />
             <AccountStack.Screen name="Settings" options={{title:"应用设置"}}   component={Settings} />
             <AccountStack.Screen name="Invoice"  options={{title:"我的发票"}}   component={Invoice} />
 
@@ -80,7 +80,7 @@ const AppTabScreen = (props)=>{
                 barStyle={{justifyContent: 'center', backgroundColor: '#004fad',height:props.bottomHeight}}>
             <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 2}}/>
             <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
-            <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"网络",       tabBarIcon:"account"}} />
+            <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"网络",       tabBarIcon:"wifi-cog"}} />
         </Tab.Navigator>
     );
 }
