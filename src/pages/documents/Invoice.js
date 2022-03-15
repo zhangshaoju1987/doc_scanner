@@ -60,6 +60,9 @@ class Invoice extends React.Component{
             html: `<img  style='display:block; width:${595}px;' src='${doc.uri}'/>`
         })
     }
+    validate(doc){
+        Alert.alert("提示信息","TODO");
+    }
     componentDidMount(){
         const images = [];
         this.props.invoiceList.forEach(element => {
@@ -67,6 +70,7 @@ class Invoice extends React.Component{
         });
         this.setState({images});
     }
+    
     render(){
 
         return (
@@ -82,11 +86,12 @@ class Invoice extends React.Component{
                             </View>
                         
                         <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
-                            <Button style={{margin:5,width:110}} mode="contained" disabled={this.state.recoginzing[item.id]} loading={this.state.recoginzing[item.id]} color={Colors.green600} onPress={()=>{this.ocr(item)}}>
-                                {item.ocrInfo?"发票信息":"识别发票"}
+                            <Button style={{margin:5,width:60}} mode="contained" disabled={this.state.recoginzing[item.id]} loading={this.state.recoginzing[item.id]} color={Colors.green600} onPress={()=>{this.ocr(item)}}>
+                                {item.ocrInfo?"详情":"识别"}
                             </Button>
-                            <Button style={{margin:5,width:110}} mode="contained" color={Colors.red900} onPress={()=>{this.remove(item.id)}}>删除发票</Button>
-                            <Button style={{margin:5,width:110}} mode="contained" color={Colors.red900} onPress={()=>{this.print(item)}}>打印</Button>
+                            <Button style={{margin:5,width:60}} mode="contained" color={Colors.blue200} onPress={()=>{this.print(item)}}>打印</Button>
+                            <Button style={{margin:5,width:60}} mode="contained" color={Colors.amber400} onPress={()=>{this.validate(item.id)}}>验真</Button>
+                            <Button style={{margin:5,width:60}} mode="contained" color={Colors.red900} onPress={()=>{this.remove(item.id)}}>删除</Button>
                         </View>
                         <Divider/>
                     </View>
