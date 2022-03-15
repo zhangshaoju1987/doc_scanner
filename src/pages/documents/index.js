@@ -44,7 +44,7 @@ export default class Document extends React.Component{
                             color="#C12C1f"
                             style={styles.listBoxImg}
                         />
-                        <Text style={styles.listBoxText}>证书</Text>
+                        <Text style={styles.listBoxText}>证件</Text>
                     </View>
                 </Touchable>
             </View>
