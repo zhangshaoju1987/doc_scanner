@@ -70,8 +70,6 @@ export default class Scanner extends React.Component {
   }
   componentWillUnmount(){
     this.setState = ()=>{}
-    store.dispatch(settingAction.showTabBar());
-
   }
   cancel(){
     this.setState({
@@ -79,7 +77,14 @@ export default class Scanner extends React.Component {
       document:undefined,
       scanning:false
     });
-    store.dispatch(settingAction.showTabBar());
+  }
+
+  reCapture(){
+    this.setState({
+      initialImage:undefined,
+      document:undefined,
+      scanning:true
+    });
   }
   /**
    * 获取到最后裁剪下来的文档
@@ -120,6 +125,9 @@ export default class Scanner extends React.Component {
     Alert.alert("保存成功");
     this.cancel();
   }
+  capture(){
+    this.pdfScannerElement.current.capture();
+  }
   render(){
 
 
@@ -147,7 +155,7 @@ export default class Scanner extends React.Component {
             style={styles.cancelFab}
             small={false}
             icon="keyboard-return"
-            onPress={() => {this.cancel();}}
+            onPress={() => {this.reCapture();}}
           />
           <FAB
             style={styles.saveFab}
@@ -198,14 +206,23 @@ export default class Scanner extends React.Component {
             onPictureTaken={this.onPictureTaken.bind(this)}
             overlayColor="rgba(0,0,0, 0.7)"
             enableTorch={true}
-            detectionCountBeforeCapture={12}
+            detectionCountBeforeCapture={15}
           />
+          
+          <FAB
+            style={styles.captureFab}
+            small={false}
+            icon="camera"
+            onPress={() => {this.capture();}}
+          />
+
           <FAB
             style={styles.returnBackFab}
             small={false}
             icon="keyboard-return"
             onPress={() => {this.cancel();}}
           />
+          
         </React.Fragment>
     )
   }
@@ -229,7 +246,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor:Colors.amber100,
     margin: 32,
-    right: "38%",
+    right: "22%",
+    bottom: 0,
+  },
+  captureFab:{
+    position: 'absolute',
+    backgroundColor:Colors.amber100,
+    margin: 32,
+    left: "22%",
     bottom: 0,
   },
   cancelFab:{
