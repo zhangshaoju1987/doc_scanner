@@ -29,7 +29,7 @@ const DocumentStackTab = () => {
         }}>
             <MyInvoiceStack.Screen name="Document"      options={{title:"我的文档"}}  component={Document} />
             <MyInvoiceStack.Screen name="Invoice"       options={{title:"我的发票"}}  component={Invoice} />
-            <MyInvoiceStack.Screen name="Certificate"   options={{title:"我的证书"}}  component={Certificate} />
+            <MyInvoiceStack.Screen name="Certificate"   options={{title:"我的证件"}}  component={Certificate} />
         </MyInvoiceStack.Navigator>
       );
 }
