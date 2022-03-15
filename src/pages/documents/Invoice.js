@@ -1,9 +1,9 @@
 import React from "react";
-import {View,Image,ScrollView,StyleSheet,Alert} from "react-native";
+import {View,Image,ScrollView,StyleSheet,Alert,PixelRatio} from "react-native";
 import { Button, Colors, Divider, FAB, Portal,Text } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
-
+import RNPrint from 'react-native-print';
 
 import {store} from "../../redux/store";
 import * as invoiceAction from "../../redux/action/invoiceAction";
@@ -53,6 +53,13 @@ class Invoice extends React.Component{
     remove(id){
         store.dispatch(invoiceAction.removeInvoice(id));
     }
+    print(doc){
+        //console.log(doc.viewWidth);
+
+        RNPrint.print({
+            html: `<img  style='display:block; width:${595}px;' src='${doc.uri}'/>`
+        })
+    }
     componentDidMount(){
         const images = [];
         this.props.invoiceList.forEach(element => {
@@ -75,10 +82,11 @@ class Invoice extends React.Component{
                             </View>
                         
                         <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
-                            <Button style={{margin:5,width:120}} mode="contained" disabled={this.state.recoginzing[item.id]} loading={this.state.recoginzing[item.id]} color={Colors.green600} onPress={()=>{this.ocr(item)}}>
+                            <Button style={{margin:5,width:110}} mode="contained" disabled={this.state.recoginzing[item.id]} loading={this.state.recoginzing[item.id]} color={Colors.green600} onPress={()=>{this.ocr(item)}}>
                                 {item.ocrInfo?"发票信息":"识别发票"}
                             </Button>
-                            <Button style={{margin:5,width:120}} mode="contained" color={Colors.red900} onPress={()=>{this.remove(item.id)}}>删除发票</Button>
+                            <Button style={{margin:5,width:110}} mode="contained" color={Colors.red900} onPress={()=>{this.remove(item.id)}}>删除发票</Button>
+                            <Button style={{margin:5,width:110}} mode="contained" color={Colors.red900} onPress={()=>{this.print(item)}}>打印</Button>
                         </View>
                         <Divider/>
                     </View>
