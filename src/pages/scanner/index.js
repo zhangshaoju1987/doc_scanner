@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, Platform ,Dimensions,Alert} from "react-native";
+import { View, StyleSheet, Text, Image, Platform ,Dimensions,Alert,NativeModules} from "react-native";
 import Permissions from 'react-native-permissions';
 import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
