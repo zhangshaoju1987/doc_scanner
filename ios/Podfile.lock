@@ -274,7 +274,7 @@ PODS:
   - React-jsinspector (0.67.3)
   - React-logger (0.67.3):
     - glog
-  - react-native-document-scanner (2.1.8):
+  - react-native-document-scanner (2.1.10):
     - React
   - react-native-print (0.10.0):
     - React-Core
@@ -614,7 +614,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 15ea57ead631a11fad57634ff69f78e797113a39
   React-jsinspector: 1e1e03345cf6d47779e2061d679d0a87d9ae73d8
   React-logger: 1e10789cb84f99288479ba5f20822ce43ced6ffe
-  react-native-document-scanner: 7a99025cc959b1ec837c9b7dcf5a059966fdc2bf
+  react-native-document-scanner: 85d41332a85a26b05d9b1f04574d0df5cf4dd268
   react-native-print: 1ae7a4ce4bf673b975f2ec9c4e00ad0c9b60e8aa
   react-native-safe-area-context: 806f8370bf9fc9db90a3413aaa1aab0d2e22fdf3
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
