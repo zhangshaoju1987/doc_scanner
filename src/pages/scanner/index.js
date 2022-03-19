@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, Platform ,Dimensions,Alert,NativeModules} from "react-native";
+import { View, StyleSheet, Text, Image, Platform ,Dimensions,Alert} from "react-native";
 import Permissions from 'react-native-permissions';
 import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
@@ -47,12 +47,18 @@ export default class Scanner extends React.Component {
   }
 
   async requestCamera() {
-    const result = await Permissions.request(Platform.OS === "android" ? "android.permission.CAMERA" : "ios.permission.CAMERA");
-    if (result === "granted") {
-      this.setAllowed(true);
-      this.setScanning(true);
-      store.dispatch(settingAction.hideTabBar());
-    }
+    Permissions.request(Platform.OS === "android" ? "android.permission.CAMERA" : "ios.permission.CAMERA")
+    .then((result)=>{
+      if (result === "granted") {
+        this.setAllowed(true);
+        this.setScanning(true);
+        store.dispatch(settingAction.hideTabBar());
+      }
+    })
+    .catch((err)=>{
+      console.log("请求相机权限异常",err);
+    });
+    
   }
   setScanning(scanning){
     this.setState({scanning})
@@ -202,7 +208,7 @@ export default class Scanner extends React.Component {
           <DocumentScanner
             useBase64={this.useBase64}
             ref={this.pdfScannerElement}
-            style={[{width:375,height:500}]}
+            style={[{width:Dimensions.get("window").width,height:Dimensions.get("window").width*4/3}]}
             onPictureTaken={this.onPictureTaken.bind(this)}
             overlayColor="rgba(0,0,0, 0.7)"
             enableTorch={true}
