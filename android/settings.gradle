@@ -21,4 +21,4 @@ include ':react-native-fs'
 project(':react-native-fs').projectDir = new File(settingsDir, '../node_modules/react-native-fs/android')
 
 include ':react-native-print'
-project(':react-native-print').projectDir = new File(rootProject.projectDir,'../node_modules/react-native-print/android')
+project(':react-native-print').projectDir = new File(rootProject.projectDir,'../node_modules/@zhumi/react-native-print/android')

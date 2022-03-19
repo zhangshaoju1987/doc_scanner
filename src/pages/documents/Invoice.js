@@ -3,7 +3,7 @@ import {View,Image,ScrollView,StyleSheet,Alert,PixelRatio} from "react-native";
 import { Button, Colors, Divider, FAB, Portal,Text } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
-import RNPrint from 'react-native-print';
+import RNPrint from '@zhumi/react-native-print';
 
 import {store} from "../../redux/store";
 import * as invoiceAction from "../../redux/action/invoiceAction";
