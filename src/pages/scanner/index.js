@@ -29,7 +29,7 @@ export default class Scanner extends React.Component {
   onPictureTaken(data){
 
     const uri = this.useBase64?`data:image/jpeg;base64,${data.initialImage}`:data.initialImage;
-    console.log("检测到文档边界:rectangleCoordinates.topLeft=",data.rectangleCoordinates.topLeft);
+    console.log("检测到文档边界:rectangleCoordinates.topLeft=",data.rectangleCoordinates?.topLeft); // 如果手动拍摄，存在识别不出的情况
     Image.getSize(uri, 
       (width, height) => {
 
