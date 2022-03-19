@@ -60,11 +60,17 @@ const AccountStackTab = () => {
 // https://reactnavigation.org/docs/tab-based-navigation  A native stack navigator for each tab​
 const ScanStackTab = () => {
     const ScanStack = createNativeStackNavigator();
+    // 默认的头部导航栏高度
+    const frame = useSafeAreaFrame();
+    const insets = useSafeAreaInsets();
+    const headerHeight = getDefaultHeaderHeight(frame, false, insets.top);
+    store.dispatch(settingAction.setHeaderHeight(headerHeight));
     return (
         <ScanStack.Navigator initialRouteName='Scanner' screenOptions={{
-            headerShown:false
+            headerShown:true,
+            header: (props)=><AppHeader {...props}/>,
         }}>
-            <ScanStack.Screen name="Scanner"      component={Scanner} />
+            <ScanStack.Screen name="Scanner" options={{title:"扫描"}}     component={Scanner} />
         </ScanStack.Navigator>
       );
 }

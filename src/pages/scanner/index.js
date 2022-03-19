@@ -29,7 +29,7 @@ export default class Scanner extends React.Component {
   onPictureTaken(data){
 
     const uri = this.useBase64?`data:image/jpeg;base64,${data.initialImage}`:data.initialImage;
-    //console.log("检测到文档边界:rectangleCoordinates.topLeft=",data.rectangleCoordinates.topLeft);
+    console.log("检测到文档边界:rectangleCoordinates.topLeft=",data.rectangleCoordinates.topLeft);
     Image.getSize(uri, 
       (width, height) => {
 
@@ -150,7 +150,7 @@ export default class Scanner extends React.Component {
       const doc = this.state.document;
       return (
         <React.Fragment>
-          <Image style={[{width:doc.viewWidth/1.5,height:doc.viewHeight/1.5,flex:1,marginLeft:(doc.viewWidth-doc.viewWidth/1.5)/2}]} source={{ uri: doc.uri}} resizeMode="contain"/>
+          <Image style={[{width:doc.viewWidth/1.8,height:doc.viewHeight/1.8,flex:1,marginLeft:(doc.viewWidth-doc.viewWidth/1.8)/2}]} source={{ uri: doc.uri}} resizeMode="contain"/>
           <FAB
             style={styles.cancelFab}
             small={false}
@@ -202,7 +202,7 @@ export default class Scanner extends React.Component {
           <DocumentScanner
             useBase64={this.useBase64}
             ref={this.pdfScannerElement}
-            style={styles.scanner}
+            style={[{width:375,height:500}]}
             onPictureTaken={this.onPictureTaken.bind(this)}
             overlayColor="rgba(0,0,0, 0.7)"
             enableTorch={true}
