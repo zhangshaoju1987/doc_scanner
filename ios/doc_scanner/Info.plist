@@ -25,7 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>needs access to your Camera.</string>
+	<string>扫描文档需要使用相机功能</string>
+  <key>LSSupportsOpeningDocumentsInPlace</key>
+  <true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

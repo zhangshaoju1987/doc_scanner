@@ -211,8 +211,8 @@ export default class Scanner extends React.Component {
             style={[{width:Dimensions.get("window").width,height:Dimensions.get("window").width*4/3}]}
             onPictureTaken={this.onPictureTaken.bind(this)}
             overlayColor="rgba(0,0,0, 0.7)"
-            enableTorch={true}
-            detectionCountBeforeCapture={12}
+            enableTorch={false}
+            detectionCountBeforeCapture={Platform.OS == "ios"?5:12}
           />
           
           <FAB
