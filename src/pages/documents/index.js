@@ -137,7 +137,7 @@ class Document extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { invoice: { invoiceList }, setting: { headerHeight, bottomHeight } } = state;
-	//console.log("检测到",invoiceList.length,"张发票");
+	console.log("检测到",invoiceList.length,"张发票");
 	return { invoiceList, headerHeight, bottomHeight };
 }
 
