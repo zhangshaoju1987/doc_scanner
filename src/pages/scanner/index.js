@@ -196,7 +196,7 @@ export default class Scanner extends React.Component {
           <DocumentScanner
             useBase64={this.useBase64}
             ref={this.pdfScannerElement}
-            style={[{width:Dimensions.get("window").width,height:Dimensions.get("window").width*4/3}]}
+            style={[{width:Dimensions.get("window").width,height:Dimensions.get("window").height-store.getState().setting.bottomHeight-store.getState().setting.headerHeight}]}
             onPictureTaken={this.onPictureTaken.bind(this)}
             overlayColor="rgba(0,0,0, 0.7)"
             enableTorch={false}
@@ -208,13 +208,6 @@ export default class Scanner extends React.Component {
             small={false}
             icon="camera"
             onPress={() => {this.capture();}}
-          />
-
-          <FAB
-            style={styles.returnBackFab}
-            small={false}
-            icon="keyboard-return"
-            onPress={() => {this.cancel();}}
           />
           
         </React.Fragment>
@@ -247,7 +240,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor:Colors.amber100,
     margin: 32,
-    left: "22%",
+    left: "35%",
     bottom: 0,
   },
   cancelFab:{
