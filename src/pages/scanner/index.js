@@ -5,7 +5,6 @@ import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scan
 import SplashScreen from "react-native-splash-screen";
 import { Colors, FAB } from "react-native-paper";
 import { store } from '../../redux/store';
-import * as settingAction from "../../redux/action/settingAction";
 import * as invoiceAction from "../../redux/action/invoiceAction";
 
 //console.log("Dimensions.get('window').width",Dimensions.get('window').width);
@@ -50,7 +49,6 @@ export default class Scanner extends React.Component {
     .then((result)=>{
       if (result === "granted") {
         this.setAllowed(true);
-        store.dispatch(settingAction.hideTabBar());
       }
     })
     .catch((err)=>{
