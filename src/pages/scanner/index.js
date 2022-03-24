@@ -50,7 +50,6 @@ export default class Scanner extends React.Component {
     .then((result)=>{
       if (result === "granted") {
         this.setAllowed(true);
-        this.setScanning(true);
         store.dispatch(settingAction.hideTabBar());
       }
     })
