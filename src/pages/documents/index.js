@@ -72,12 +72,22 @@ class Document extends React.Component {
 			});
 
 	}
-	componentDidMount() {
+	initData(){
 		const images = [];
 		this.props.invoiceList.forEach(element => {
 			images.push({ uri: element.uri });
 		});
 		this.setState({ images });
+	}
+	componentDidMount() {
+		this.initData();
+		this._unsubscribe = this.props.navigation.addListener('focus', () => {
+			this.initData();
+		});
+	}
+
+	componentWillUnmount(){
+		this._unsubscribe();
 	}
 
 	render() {
