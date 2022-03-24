@@ -50,7 +50,8 @@ class Document extends React.Component{
         .then(async ()=>{
             const res = await CameraRoll.save(filePath, { type:"photo",album:"拍文档"});
             console.log("保存到相册",res);
-            Alert.alert("消息提醒","保存成功,图片在相册的分类目录为:拍文档");
+            Alert.alert("消息提醒","保存成功\n图片在相册的分类目录为:拍文档");
+            RNFS.unlink(filePath);
         }).catch((err)=>{
             console.log("保存失败",err);
             Alert.alert("消息提醒","保存失败"+err.message);

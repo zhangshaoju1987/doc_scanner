@@ -123,7 +123,7 @@ export default class Scanner extends React.Component {
    */
   save(){
     store.dispatch(invoiceAction.addInvoice(this.state.document));
-    Alert.alert("保存成功");
+    Alert.alert("消息提醒","已保存到我的文档");
     this.cancel();
   }
   capture(){
