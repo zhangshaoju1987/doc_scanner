@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Platform ,Dimensions,Alert} from "react-
 import Permissions from 'react-native-permissions';
 import {DocumentCropper,DocumentScanner} from "@zhumi/react-native-document-scanner";
 import SplashScreen from "react-native-splash-screen";
-import { Colors, FAB, IconButton } from "react-native-paper";
+import { Colors, FAB } from "react-native-paper";
 import { store } from '../../redux/store';
 import * as settingAction from "../../redux/action/settingAction";
 import * as invoiceAction from "../../redux/action/invoiceAction";
