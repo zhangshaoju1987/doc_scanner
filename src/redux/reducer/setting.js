@@ -6,7 +6,7 @@ const initialState =
 {
 	tabBarVisiable			:"flex",
 	headerHeight			:56,
-	bottomHeight			:64
+	bottomHeight			:54
 };
 
 const setting = (state = initialState, action) =>

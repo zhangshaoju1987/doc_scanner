@@ -81,12 +81,12 @@ const AppTabScreen = (props)=>{
     const Tab = createMaterialBottomTabNavigator();
     //console.log("AppTabScreen.props",props);
     return (
-        <Tab.Navigator initialRouteName='ScanStackTab' activeColor="#f0edf6" inactiveColor="#3e2465" 
+        <Tab.Navigator initialRouteName='DocumentStackTab' activeColor="#f0edf6" inactiveColor="#3e2465" 
                 style={{}}
                 barStyle={{justifyContent: 'center', backgroundColor: '#004fad',height:props.bottomHeight}}>
-            <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home", tabBarBadge: 2}}/>
+            <Tab.Screen name="DocumentStackTab"  component={DocumentStackTab}  options={{tabBarLabel:"我的文档",   tabBarIcon:"home"}}/>
             <Tab.Screen name="ScanStackTab"      component={ScanStackTab}      options={{tabBarLabel:"拍文档",     tabBarIcon:"camera"}}/>
-            <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"网络",       tabBarIcon:"wifi-cog"}} />
+            {/* <Tab.Screen name="AccountStackTab"   component={AccountStackTab}   options={{tabBarLabel:"网络",       tabBarIcon:"wifi-cog"}} /> */}
         </Tab.Navigator>
     );
 }

@@ -19,7 +19,7 @@ export default class Scanner extends React.Component {
     this.state = {
       allowed:false,
       document:undefined,
-      scanning:false,// 是否进入了扫描流程
+      scanning:true,// 是否进入了扫描流程
     }
   }
 
@@ -38,7 +38,7 @@ export default class Scanner extends React.Component {
           imageHeight: height,
           initialImage: uri,
           rectangleCoordinates:data.rectangleCoordinates
-        });        
+        });
       },
       (err) => {
         console.log("Image.getSize失败",err);
@@ -66,6 +66,7 @@ export default class Scanner extends React.Component {
 
   componentDidMount(){
     SplashScreen.hide();
+    this.requestCamera();
   }
 
   doCapture() {
