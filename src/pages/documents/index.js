@@ -1,86 +1,138 @@
 import React from "react";
-import {StyleSheet,Dimensions,View} from "react-native";
-import Certificate from "./Certificate";
-import Invoice from "./Invoice";
-import NavigationService from "../../navigator/NavigationService";
-import { store } from '../../redux/store';
-import * as settingAction from "../../redux/action/settingAction";
-import { Touchable } from "../../components/Touchable";
-import { IconButton, Text } from "react-native-paper";
+import {View,Image,ScrollView,StyleSheet,Alert,PermissionsAndroid } from "react-native";
+import { Button, Colors, Divider, FAB, Portal,Text } from "react-native-paper";
+import { connect } from "react-redux";
+import ImageView from "react-native-image-viewing";
+import CameraRoll from "@react-native-community/cameraroll";
 
-export default class Document extends React.Component{
+import {store} from "../../redux/store";
+import * as invoiceAction from "../../redux/action/invoiceAction";
+import RNFS from "react-native-fs";
+import { Touchable } from "../../components/Touchable";
+
+
+/**
+ * 我的发票展示
+ */
+class Document extends React.Component{
     constructor(props){
         super(props);
+        this.state = {
+            isVisible:false,
+            recoginzing:{}
+        }
+    }
+    async hasAndroidPermission() {
+        const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+        
+        const hasPermission = await PermissionsAndroid.check(permission);
+        if (hasPermission) {
+            return true;
+        }
+        
+        const status = await PermissionsAndroid.request(permission);
+        return status === 'granted';
+    }
+    remove(id){
+        store.dispatch(invoiceAction.removeInvoice(id));
+    }
+    async saveToAlbum(doc){
+        //console.log(doc.viewWidth);
+
+        if (Platform.OS === "android" && !(await this.hasAndroidPermission())) {
+            return;
+        }
+        const dir = Platform.OS == "ios"?RNFS.LibraryDirectoryPath:RNFS.ExternalDirectoryPath;
+        const filePath = `${dir}/${new Date().getTime()}.jpeg`;
+        const content = doc.uri.replace("data:image/jpeg;base64,",""); 
+        console.log("保存文件",filePath);
+        RNFS.writeFile(filePath,content,"base64")
+        .then(async ()=>{
+            const res = await CameraRoll.save(filePath, { type:"photo",album:"拍文档"});
+            console.log("保存到相册",res);
+            Alert.alert("消息提醒","保存成功,图片在相册的分类目录为:拍文档");
+        }).catch((err)=>{
+            console.log("保存失败",err);
+            Alert.alert("消息提醒","保存失败"+err.message);
+        });
+       
     }
     componentDidMount(){
-        store.dispatch(settingAction.showTabBar());
+        const images = [];
+        this.props.invoiceList.forEach(element => {
+            images.push({uri:element.uri});
+        });
+        this.setState({images});
     }
-    toPage(routerName){
-        NavigationService.navigate(routerName);
-    }
+    
     render(){
+
         return (
-            <View style={styles.list}>
-
-                <Touchable
-                    onPress={this.toPage.bind(this,"Invoice")}>
-                    <View style={styles.listBox}>
-                        <IconButton
-                            icon="file-document"
-                            size={50}
-                            color="#87C0CA"
-                            style={styles.listBoxImg}
-                        />
-                        <Text style={styles.listBoxText}>发票</Text>
+            <View>
+                <ScrollView>
+                {
+                    this.props.invoiceList.map((item,idx)=>(
+                    <View key={item.id}>
+                            <View  style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
+                                <Touchable onPress={()=>{this.setState({isVisible:true,imageIdxToShow:idx})}}>
+                                    <Image style={{width:item.viewWidth*0.25,height:item.viewHeight*0.25}} source={{uri:item.uri}} />
+                                </Touchable>  
+                            </View>
+                        <View style={{flexDirection:"row",alignItems:"center",justifyContent:"center",margin:5}}>
+                            <Button style={{margin:5,width:110}} mode="contained"  onPress={()=>{this.saveToAlbum(item)}}>
+                                保存到相册
+                            </Button>
+                            <Button style={{margin:5,width:60}} mode="outlined" color={Colors.red900} onPress={()=>{this.remove(item.id)}}>删除</Button>
+                        </View>
+                        <Divider/>
                     </View>
-                </Touchable>
-
-                <Touchable
-                    onPress={this.toPage.bind(this,"Certificate")}>
-                    <View style={styles.listBox}>
-                        <IconButton
-                            icon="certificate"
-                            size={50}
-                            color="#C12C1f"
-                            style={styles.listBoxImg}
-                        />
-                        <Text style={styles.listBoxText}>证件</Text>
-                    </View>
-                </Touchable>
+                    ))
+                }
+                </ScrollView>
+                {
+                this.state.ocrResult &&
+                <Portal>
+                    <ScrollView style={{marginTop:this.props.headerHeight,marginBottom:this.props.bottomHeight,backgroundColor:"white"}}>
+                        <Text >
+                            {this.state.ocrResult}
+                        </Text>
+                    </ScrollView>
+                    <FAB
+                        style={styles.closeFab}
+                        small={false}
+                        icon="keyboard-return"
+                        onPress={() => {this.setState({ocrResult:undefined})}}
+                    />
+                </Portal>
+                }
+                <Portal>
+                <ImageView
+                    images={this.state.images}
+                    imageIndex={this.state.imageIdxToShow}
+                    visible={this.state.isVisible}
+                    onRequestClose={() => {
+                        this.setState({isVisible:false})
+                    }}
+                    />
+                </Portal>
             </View>
-        )
+        );
     }
+}
+
+const mapStateToProps = (state)=>{
+    const {invoice:{invoiceList},setting:{headerHeight,bottomHeight}} = state;
+    //console.log("检测到",invoiceList.length,"张发票");
+    return {invoiceList,headerHeight,bottomHeight};
 }
 
 
 const styles = StyleSheet.create({
-    list: {
-		flexWrap: 'wrap',
-		flexDirection: 'row',
-		marginTop: 50,
-		paddingLeft: 40,
-		paddingRight: 40,
-		borderBottomWidth: 0.5,
-		borderStyle: "solid",
-		borderBottomColor: "#dedede",
-		paddingBottom: 40
-	},
-	listBox: {
-		width: (Dimensions.get("window").width - 40 * 2 - 40) / 4,
-		marginRight: 10,
-		marginBottom: 10,
-		alignItems: 'center',
-	},
-	listBoxImg: {
-		width: 50,
-		height: 50,
-	},
-
-	listBoxText: {
-		fontSize: 13,
-		paddingTop: 0,
-		textAlign: 'center'
-	}
+    closeFab: {
+      position: 'absolute',
+      margin: 32,
+      right: "38%",
+      bottom: 40,
+  }
 });
-
-export {Invoice,Certificate}
+export default connect(mapStateToProps)(Document);

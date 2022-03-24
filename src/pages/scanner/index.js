@@ -19,7 +19,6 @@ export default class Scanner extends React.Component {
     this.state = {
       allowed:false,
       document:undefined,
-      scanning:true,// 是否进入了扫描流程
     }
   }
 
@@ -60,9 +59,6 @@ export default class Scanner extends React.Component {
     });
     
   }
-  setScanning(scanning){
-    this.setState({scanning})
-  }
 
   componentDidMount(){
     SplashScreen.hide();
@@ -81,8 +77,7 @@ export default class Scanner extends React.Component {
   cancel(){
     this.setState({
       initialImage:undefined,
-      document:undefined,
-      scanning:false
+      document:undefined
     });
   }
 
@@ -90,7 +85,6 @@ export default class Scanner extends React.Component {
     this.setState({
       initialImage:undefined,
       document:undefined,
-      scanning:true
     });
   }
   /**
@@ -138,13 +132,6 @@ export default class Scanner extends React.Component {
   render(){
 
 
-    if (!this.state.scanning) {
-      return (
-        <View style={{flex:1,justifyContent: "center",alignItems: "center"}}>
-          <IconButton icon="camera" color={Colors.red500} size={40} onPress={() => {this.requestCamera();}}/>
-        </View>
-      )
-    }
     if (!this.state.allowed) {
       return (
         <View style={styles.permissions}>
