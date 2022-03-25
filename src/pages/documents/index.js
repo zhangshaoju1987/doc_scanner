@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid } from "react-native";
+import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid,Dimensions } from "react-native";
 import { Button, Colors, Divider, FAB, Portal, Text } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
@@ -22,6 +22,7 @@ class Document extends React.Component {
 			isVisible: false,
 			recoginzing: {}
 		}
+		this.customCrop = React.createRef();
 	}
 	async hasAndroidPermission() {
 		const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -55,16 +56,18 @@ class Document extends React.Component {
 		
 		launchImageLibrary({mediaType:"photo",selectionLimit:1}, (resp)=>{
 
-			console.log("屏幕宽高：",Dimensions.get('window').width,Dimensions.get('window').height);
-			console.log("launchImageLibrary",resp);
+			if(!resp.assets || resp.assets.length == 0){
+				return;
+			}
+			console.log("屏幕宽高：",parseInt(Dimensions.get('window').width)," x ",parseInt(Dimensions.get('window').height));
+			//console.log("launchImageLibrary",resp);
 			const uri = resp.assets[0].uri;
 			detectDocument(uri,(res)=>{
-				console.log("width,height",width,height);
 				console.log("边界识别",res);
 				this.setState({
+					initialImage: uri,
 					imageWidth: res.size.width,
 					imageHeight: res.size.height,
-					initialImage: uri,
 					rectangleCoordinates:res.rectangleCoordinates
 				});
 			});		
@@ -110,12 +113,68 @@ class Document extends React.Component {
 	componentWillUnmount(){
 		this._unsubscribe();
 	}
-	onGotDocument(doc){
+	/**
+	 * 获取到最后裁剪下来的文档
+	 * @param {string} image 
+	 * @param {*} newCoordinates 
+	 */
+	onGotDocument(image, newCoordinates) {
 
+		const uri = `data:image/jpeg;base64,${image}`;
+		Image.getSize(uri, 
+			(width, height) => {
+				//console.log("文档宽高",width, height);
+				const viewWidth = Dimensions.get("window").width;
+				const scale = viewWidth/width;
+				this.setState({
+					document:{
+						id:new Date().getTime(),
+						uri:uri,
+						viewWidth,                // 文档展示的宽度
+						viewHeight:height*scale   // 文档展示的高度
+				},
+				rectangleCoordinates:newCoordinates,
+				initialImage:undefined,
+				});     
+			},
+			(err) => {
+				console.log("文档展示失败",err);
+			}
+		);
+		//console.log("成功获取到文档如下\n",image);
 	}
 
+	/**
+	 * 保存并识别
+	 */
+	save(){
+		store.dispatch(invoiceAction.addInvoice(this.state.document));
+		Alert.alert("消息提醒","已保存到我的文档");
+	}
+
+	cancel(){
+		this.setState({initialImage:undefined,document:undefined});
+	}
+	crop() {
+		this.customCrop.current.crop();
+	}
 	render() {
 
+		if(this.state.document?.uri){
+			//console.log("this.state.document",this.state.document.substring(0,100));
+			const doc = this.state.document;
+			return (
+				<React.Fragment>
+					<Image style={[{width:doc.viewWidth/1.2,height:doc.viewHeight/1.2,flex:1,marginLeft:(doc.viewWidth-doc.viewWidth/1.2)/2}]} source={{ uri: doc.uri}} resizeMode="contain"/>
+					<FAB
+						style={styles.cancelFab}
+						small={false}
+						icon="keyboard-return"
+						onPress={() => {this.cancel();}}
+					/>
+				</React.Fragment>
+			)
+		}
 		return (
 			<View>
 				<ScrollView>
@@ -172,11 +231,24 @@ class Document extends React.Component {
 							initialImage={this.state.initialImage}
 							height={this.state.imageHeight}
 							width={this.state.imageWidth}
+							imageSource="image"
 							ref={this.customCrop}
 							overlayColor="rgba(18,190,210, 1)"
 							overlayStrokeColor="rgba(20,190,210, 1)"
 							handlerColor="rgba(20,150,160, 1)"
 							enablePanStrict={false}
+						/>
+						<FAB
+							style={styles.cancelFab}
+							small={false}
+							icon="keyboard-return"
+							onPress={() => {this.cancel();}}
+						/>
+						<FAB
+							style={styles.cropFab}
+							small={false}
+							icon="scissors-cutting"
+							onPress={() => {this.crop();}}
 						/>
 					</Portal>
 				}
@@ -188,7 +260,7 @@ class Document extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { invoice: { invoiceList }, setting: { headerHeight, bottomHeight } } = state;
-	console.log("检测到",invoiceList.length,"张发票");
+	//console.log("检测到",invoiceList.length,"张发票");
 	return { invoiceList, headerHeight, bottomHeight };
 }
 
@@ -199,6 +271,20 @@ const styles = StyleSheet.create({
 		margin: 32,
 		right: "38%",
 		bottom: 40,
-	}
+	},
+	cancelFab:{
+		position: 'absolute',
+		backgroundColor:Colors.amber100,
+		margin: 32,
+		left: "22%",
+		bottom: 0,
+	  },
+	cropFab:{
+	position: 'absolute',
+	backgroundColor:Colors.amber100,
+	margin: 32,
+	right: "22%",
+	bottom: 0,
+	},
 });
 export default connect(mapStateToProps)(Document);
