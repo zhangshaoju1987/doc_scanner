@@ -9,7 +9,8 @@ import { store } from "../../redux/store";
 import * as invoiceAction from "../../redux/action/invoiceAction";
 import RNFS from "react-native-fs";
 import { Touchable } from "../../components/Touchable";
-
+import {detectDocument,DocumentCropper} from "@zhumi/react-native-document-scanner";
+import { launchImageLibrary} from 'react-native-image-picker';
 
 /**
  * 我的发票展示
@@ -50,6 +51,27 @@ class Document extends React.Component {
 		);
 		;
 	}
+	test(){
+		
+		launchImageLibrary({mediaType:"photo",selectionLimit:1}, (resp)=>{
+
+			console.log("launchImageLibrary",resp);
+			const uri = resp.assets[0].uri;
+			Image.getSize(uri,(width,height)=>{
+				detectDocument(uri,(err,res)=>{
+					console.log("width,height",width,height);
+					console.log("边界识别",res);
+					this.setState({
+						imageWidth: width,
+						imageHeight: height,
+						initialImage: uri,
+						rectangleCoordinates:res
+					});
+				});
+			});			
+		});
+
+	}
 	async saveToAlbum(doc) {
 		//console.log(doc.viewWidth);
 
@@ -89,6 +111,9 @@ class Document extends React.Component {
 	componentWillUnmount(){
 		this._unsubscribe();
 	}
+	onGotDocument(doc){
+
+	}
 
 	render() {
 
@@ -104,9 +129,8 @@ class Document extends React.Component {
 									</Touchable>
 								</View>
 								<View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 5 }}>
-									<Button style={{ margin: 5, width: 110 }} mode="contained" onPress={() => { this.saveToAlbum(item) }}>
-										保存到相册
-									</Button>
+									<Button style={{ margin: 5, width: 110 }} mode="contained" onPress={() => { this.saveToAlbum(item) }}>保存到相册</Button>
+									<Button style={{ margin: 5, width: 110 }} color={Colors.blueGrey400} mode="contained" onPress={() => { this.test() }}>边界检测</Button>
 									<Button style={{ margin: 5, width: 60 }} mode="outlined" color={Colors.red900} onPress={() => { this.remove(item.id) }}>删除</Button>
 								</View>
 								<Divider />
@@ -140,6 +164,24 @@ class Document extends React.Component {
 						}}
 					/>
 				</Portal>
+				{
+					 this.state.initialImage &&
+					<Portal>
+						<DocumentCropper
+							updateImage={this.onGotDocument.bind(this)}
+							rectangleCoordinates={this.state.rectangleCoordinates}
+							initialImage={this.state.initialImage}
+							height={this.state.imageHeight}
+							width={this.state.imageWidth}
+							ref={this.customCrop}
+							overlayColor="rgba(18,190,210, 1)"
+							overlayStrokeColor="rgba(20,190,210, 1)"
+							handlerColor="rgba(20,150,160, 1)"
+							enablePanStrict={false}
+						/>
+					</Portal>
+				}
+				
 			</View>
 		);
 	}

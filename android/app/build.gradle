@@ -225,6 +225,8 @@ dependencies {
     implementation project(':react-native-fs')
     implementation project(':react-native-print')
     implementation project(':@react-native-community_cameraroll')
+    implementation project(':opencv310')
+
 
 }
 
