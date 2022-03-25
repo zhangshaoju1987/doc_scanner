@@ -55,20 +55,19 @@ class Document extends React.Component {
 		
 		launchImageLibrary({mediaType:"photo",selectionLimit:1}, (resp)=>{
 
+			console.log("屏幕宽高：",Dimensions.get('window').width,Dimensions.get('window').height);
 			console.log("launchImageLibrary",resp);
 			const uri = resp.assets[0].uri;
-			Image.getSize(uri,(width,height)=>{
-				detectDocument(uri,(err,res)=>{
-					console.log("width,height",width,height);
-					console.log("边界识别",res);
-					this.setState({
-						imageWidth: width,
-						imageHeight: height,
-						initialImage: uri,
-						rectangleCoordinates:res
-					});
+			detectDocument(uri,(res)=>{
+				console.log("width,height",width,height);
+				console.log("边界识别",res);
+				this.setState({
+					imageWidth: res.size.width,
+					imageHeight: res.size.height,
+					initialImage: uri,
+					rectangleCoordinates:res.rectangleCoordinates
 				});
-			});			
+			});		
 		});
 
 	}

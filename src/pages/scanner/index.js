@@ -7,7 +7,6 @@ import { Colors, FAB } from "react-native-paper";
 import { store } from '../../redux/store';
 import * as invoiceAction from "../../redux/action/invoiceAction";
 
-console.log("Dimensions.get('window').width",Dimensions.get('window').width);
 export default class Scanner extends React.Component {
 
   constructor(props){
