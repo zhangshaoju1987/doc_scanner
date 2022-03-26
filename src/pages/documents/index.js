@@ -60,10 +60,18 @@ class Document extends React.Component {
 				return;
 			}
 			console.log("屏幕宽高：",parseInt(Dimensions.get('window').width)," x ",parseInt(Dimensions.get('window').height));
-			//console.log("launchImageLibrary",resp);
+			console.log("launchImageLibrary",resp);
 			const uri = resp.assets[0].uri;
 			detectDocument(uri,(res)=>{
 				console.log("边界识别",res);
+				if(!res.success){
+					Alert.alert("消息提醒",res.message);
+					return;
+				}
+				if(!res.size || res.size.width<100 || res.size.height<100){
+					Alert.alert("消息提醒","图片太小");
+					return;
+				}
 				this.setState({
 					initialImage: uri,
 					imageWidth: res.size.width,
@@ -176,7 +184,7 @@ class Document extends React.Component {
 			)
 		}
 		return (
-			<View>
+			<View style={{height:"100%"}}>
 				<ScrollView>
 					{
 						this.props.invoiceList.map((item, idx) => (
@@ -188,7 +196,6 @@ class Document extends React.Component {
 								</View>
 								<View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 5 }}>
 									<Button style={{ margin: 5, width: 110 }} mode="contained" onPress={() => { this.saveToAlbum(item) }}>保存到相册</Button>
-									<Button style={{ margin: 5, width: 110 }} color={Colors.blueGrey400} mode="contained" onPress={() => { this.test() }}>边界检测</Button>
 									<Button style={{ margin: 5, width: 60 }} mode="outlined" color={Colors.red900} onPress={() => { this.remove(item.id) }}>删除</Button>
 								</View>
 								<Divider />
@@ -252,7 +259,12 @@ class Document extends React.Component {
 						/>
 					</Portal>
 				}
-				
+				<FAB
+					style={styles.importPhotoFAB}
+					small={false}
+					icon="folder-image"
+					onPress={() => {this.test();}}
+				/>
 			</View>
 		);
 	}
@@ -271,6 +283,12 @@ const styles = StyleSheet.create({
 		margin: 32,
 		right: "38%",
 		bottom: 40,
+	},
+	importPhotoFAB:{
+		position: 'absolute',
+		margin: 32,
+		right: "38%",
+		bottom: 10,
 	},
 	cancelFab:{
 		position: 'absolute',
