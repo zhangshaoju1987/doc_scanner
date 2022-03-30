@@ -230,7 +230,7 @@ class Document extends React.Component {
 					/>
 				</Portal>
 				{
-					 this.state.initialImage &&
+					this.state.initialImage &&
 					<Portal>
 						<DocumentCropper
 							updateImage={this.onGotDocument.bind(this)}
@@ -262,6 +262,7 @@ class Document extends React.Component {
 				<FAB
 					style={styles.importPhotoFAB}
 					small={false}
+					visible={this.state.initialImage?false:true}
 					icon="folder-image"
 					onPress={() => {this.test();}}
 				/>
@@ -282,12 +283,12 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		margin: 32,
 		right: "38%",
-		bottom: 40,
+		bottom: 10,
 	},
 	importPhotoFAB:{
 		position: 'absolute',
 		margin: 32,
-		right: "38%",
+		right: "34%",
 		bottom: 10,
 	},
 	cancelFab:{
@@ -295,14 +296,14 @@ const styles = StyleSheet.create({
 		backgroundColor:Colors.amber100,
 		margin: 32,
 		left: "22%",
-		bottom: 0,
+		bottom: 20+store.getState().setting.bottomHeight,
 	  },
 	cropFab:{
-	position: 'absolute',
-	backgroundColor:Colors.amber100,
-	margin: 32,
-	right: "22%",
-	bottom: 0,
+		position: 'absolute',
+		backgroundColor:Colors.amber100,
+		margin: 32,
+		right: "22%",
+		bottom: 20+store.getState().setting.bottomHeight,
 	},
 });
 export default connect(mapStateToProps)(Document);
