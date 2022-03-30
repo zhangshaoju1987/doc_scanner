@@ -46,8 +46,11 @@ export default class Scanner extends React.Component {
   async requestCamera() {
     Permissions.request(Platform.OS === "android" ? "android.permission.CAMERA" : "ios.permission.CAMERA")
     .then((result)=>{
+      console.log("相机授权结果",result);
       if (result === "granted") {
-        this.setAllowed(true);
+        setTimeout(()=>{
+          this.setAllowed(true);
+        },1000);
       }
     })
     .catch((err)=>{

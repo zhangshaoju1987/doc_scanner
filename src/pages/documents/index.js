@@ -11,7 +11,7 @@ import RNFS from "react-native-fs";
 import { Touchable } from "../../components/Touchable";
 import {detectDocument,DocumentCropper} from "@zhumi/react-native-document-scanner";
 import { launchImageLibrary} from 'react-native-image-picker';
-
+import {WaterfallList} from "react-native-largelist";
 /**
  * 我的发票展示
  */
@@ -166,8 +166,18 @@ class Document extends React.Component {
 	crop() {
 		this.customCrop.current.crop();
 	}
+	/**
+	 * 保存并识别
+	 */
+	save(){
+		store.dispatch(invoiceAction.addInvoice(this.state.document));
+		Alert.alert("消息提醒","已保存到我的文档");
+	}
+	_renderItem (item){
+		return <Image source={{ uri: item.uri }} style={{ flex: 1, margin: 5 }} />;
+	};
 	render() {
-
+		const screenWidth = Dimensions.get("window").width;
 		if(this.state.document?.uri){
 			//console.log("this.state.document",this.state.document.substring(0,100));
 			const doc = this.state.document;
@@ -180,29 +190,24 @@ class Document extends React.Component {
 						icon="keyboard-return"
 						onPress={() => {this.cancel();}}
 					/>
+					<FAB
+							style={styles.saveFab}
+							small={false}
+							icon="content-save-all"
+							onPress={() => {this.save();}}
+						/>
 				</React.Fragment>
 			)
 		}
 		return (
 			<View style={{height:"100%"}}>
-				<ScrollView>
-					{
-						this.props.invoiceList.map((item, idx) => (
-							<View key={item.id}>
-								<View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 5 }}>
-									<Touchable onPress={() => { this.setState({ isVisible: true, imageIdxToShow: idx }) }}>
-										<Image style={{ width: item.viewWidth * 0.25, height: item.viewHeight * 0.25 }} source={{ uri: item.uri }} />
-									</Touchable>
-								</View>
-								<View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", margin: 5 }}>
-									<Button style={{ margin: 5, width: 110 }} mode="contained" onPress={() => { this.saveToAlbum(item) }}>保存到相册</Button>
-									<Button style={{ margin: 5, width: 60 }} mode="outlined" color={Colors.red900} onPress={() => { this.remove(item.id) }}>删除</Button>
-								</View>
-								<Divider />
-							</View>
-						))
-					}
-				</ScrollView>
+				<WaterfallList
+					data={this.props.invoiceList}
+					heightForItem={item => screenWidth / Math.floor(screenWidth / 150) * +item.viewHeight / +item.viewWidth}
+					numColumns={2}
+					// preferColumnWidth={150}
+					renderItem={this._renderItem}
+				/>
 				{
 					this.state.ocrResult &&
 					<Portal>
@@ -217,6 +222,7 @@ class Document extends React.Component {
 							icon="keyboard-return"
 							onPress={() => { this.setState({ ocrResult: undefined }) }}
 						/>
+						
 					</Portal>
 				}
 				<Portal>
@@ -279,6 +285,13 @@ const mapStateToProps = (state) => {
 
 
 const styles = StyleSheet.create({
+	saveFab:{
+		position: 'absolute',
+		backgroundColor:Colors.amber100,
+		margin: 32,
+		right: "22%",
+		bottom: 20+store.getState().setting.bottomHeight,
+	  },
 	closeFab: {
 		position: 'absolute',
 		margin: 32,
