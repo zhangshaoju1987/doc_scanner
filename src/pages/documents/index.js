@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid,Dimensions } from "react-native";
-import { Button, Colors, Divider, FAB, Portal, Text } from "react-native-paper";
+import { Colors, FAB, Portal, Text } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
 import CameraRoll from "@react-native-community/cameraroll";
@@ -8,7 +8,6 @@ import CameraRoll from "@react-native-community/cameraroll";
 import { store } from "../../redux/store";
 import * as invoiceAction from "../../redux/action/invoiceAction";
 import RNFS from "react-native-fs";
-import { Touchable } from "../../components/Touchable";
 import {detectDocument,DocumentCropper} from "@zhumi/react-native-document-scanner";
 import { launchImageLibrary} from 'react-native-image-picker';
 import {WaterfallList} from "react-native-largelist";

@@ -61,7 +61,12 @@ export default class Scanner extends React.Component {
 
   componentDidMount(){
     SplashScreen.hide();
-    this.requestCamera();
+    this._unsubscribe1 = this.props.navigation.addListener('blur', () => {
+			this.setState({allowed:false});
+    });
+    this._unsubscribe2 = this.props.navigation.addListener('focus', () => {
+      this.requestCamera();
+		});
   }
 
   doCapture() {

@@ -17,7 +17,7 @@
     "@react-navigation/material-bottom-tabs": "^6.1.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
-    "@zhumi/react-native-document-scanner": "^2.4.2",
+    "@zhumi/react-native-document-scanner": "^2.4.4",
     "@zhumi/react-native-print": "^0.10.0",
     "react": "17.0.2",
     "react-native": "0.67.3",
