@@ -10,7 +10,7 @@ import * as invoiceAction from "../../redux/action/invoiceAction";
 import RNFS from "react-native-fs";
 import {detectDocument,DocumentCropper} from "@zhumi/react-native-document-scanner";
 import { launchImageLibrary} from 'react-native-image-picker';
-import {WaterfallList} from "react-native-largelist";
+import {WaterfallList} from "../../components/waterfall/WaterfallList";
 /**
  * 我的发票展示
  */
