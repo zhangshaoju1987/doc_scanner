@@ -17,6 +17,7 @@
     "@react-navigation/material-bottom-tabs": "^6.1.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "@react-navigation/stack": "^6.2.1",
     "@zhumi/react-native-document-scanner": "^2.4.4",
     "@zhumi/react-native-print": "^0.10.0",
     "@zhumi/react-native-spring-scrollview": "3.0.3",
