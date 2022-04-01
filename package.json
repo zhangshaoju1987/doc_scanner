@@ -7,6 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "clean": "cd android && .\\gradlew.bat clean && rm -rf .gradle && && cd .. && react-native start --reset-cache",
+    "clean_android": "cd android && .\\gradlew.bat clean && rmdir /S /Q .gradle && cd ..",
     "build_apk": "cd android && .\\gradlew.bat assembleRelease && echo 'apk file in directory android/app/build/outputs/apk/release/doc_scanner.apk'",
     "build_ios": "rm -rf ios/bundles && mkdir -p ios/bundles && react-native bundle --platform ios --entry-file index.js --bundle-output ios/bundles/main.jsbundle --assets-dest  ios/bundles --dev false"
   },
