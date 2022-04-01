@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid,Dimensions } from "react-native";
+import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid,Dimensions,Text } from "react-native";
 import { Colors, FAB, Portal, Text } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
@@ -11,6 +11,7 @@ import RNFS from "react-native-fs";
 import {detectDocument,DocumentCropper} from "@zhumi/react-native-document-scanner";
 import { launchImageLibrary} from 'react-native-image-picker';
 import {WaterfallList} from "../../components/waterfall/WaterfallList";
+import {Touchable} from "../../components"
 /**
  * 我的发票展示
  */
@@ -51,7 +52,7 @@ class Document extends React.Component {
 		);
 		;
 	}
-	test(){
+	launchImage(){
 		
 		launchImageLibrary({mediaType:"photo",selectionLimit:1}, (resp)=>{
 
@@ -172,9 +173,30 @@ class Document extends React.Component {
 		store.dispatch(invoiceAction.addInvoice(this.state.document));
 		Alert.alert("消息提醒","已保存到我的文档");
 	}
-	_renderItem (item){
-		return <Image source={{ uri: item.uri }} style={{ flex: 1, margin: 5 }} />;
+	_renderItem (item,index){
+		return (
+			<Touchable onPress={()=>{
+				this.setState({isVisible:true,imageIdxToShow:index});
+			}}>
+				<Image source={{ uri: item.uri }} style={{ flex: 1, margin: 5 }} />
+			</Touchable>
+		);
 	};
+	_renderHeader = () => {
+		return (
+		  <View style={{ padding: 20, alignItems: "center", backgroundColor: "red" }}>
+			<Text>I am header</Text>
+		  </View>
+		);
+	  };
+	
+	  _renderFooter = () => {
+		return (
+		  <View style={{ padding: 20, alignItems: "center", backgroundColor: "red" }}>
+			<Text>I am footer</Text>
+		  </View>
+		);
+	  };
 	render() {
 		const screenWidth = Dimensions.get("window").width;
 		if(this.state.document?.uri){
@@ -205,6 +227,8 @@ class Document extends React.Component {
 					heightForItem={item => screenWidth / Math.floor(screenWidth / 150) * +item.viewHeight / +item.viewWidth}
 					numColumns={2}
 					// preferColumnWidth={150}
+					renderHeader={this._renderHeader}
+        			renderFooter={this._renderFooter}
 					renderItem={this._renderItem}
 				/>
 				{
@@ -269,7 +293,7 @@ class Document extends React.Component {
 					small={false}
 					visible={this.state.initialImage?false:true}
 					icon="folder-image"
-					onPress={() => {this.test();}}
+					onPress={() => {this.launchImage();}}
 				/>
 			</View>
 		);
