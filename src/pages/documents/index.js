@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid,Dimensions,Text } from "react-native";
-import { Colors, FAB, Portal, Text } from "react-native-paper";
+import { Colors, FAB, Portal } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
 import CameraRoll from "@react-native-community/cameraroll";

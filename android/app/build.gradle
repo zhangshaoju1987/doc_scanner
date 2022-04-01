@@ -223,7 +223,6 @@ dependencies {
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
     implementation project(':react-native-fs')
-    implementation project(':react-native-print')
     implementation project(':@react-native-community_cameraroll')
     implementation project(':opencv310')
     implementation project(':react-native-spring-scrollview')
