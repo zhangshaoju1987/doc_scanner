@@ -1,5 +1,5 @@
 import React from "react";
-import {SpringScrollView} from "react-native-spring-scrollview";
+import {SpringScrollView} from "@zhumi/react-native-spring-scrollview";
 import {Animated,Dimensions,StyleSheet} from "react-native";
 import {styles} from "./styles";
 import {idx} from "./idx";

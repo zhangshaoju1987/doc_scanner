@@ -1,15 +1,6 @@
-/*
- *
- * Created by Stone
- * https://github.com/bolan9999
- * Email: shanshang130@gmail.com
- * Date: 2018/7/17
- *
- */
-
 import React from "react";
 import { Animated, StyleSheet, Dimensions } from "react-native";
-import { SpringScrollView } from "react-native-spring-scrollview";
+import { SpringScrollView } from "@zhumi/react-native-spring-scrollview";
 import { styles } from "./styles";
 import { Group } from "./Group";
 import { idx } from "./idx";
