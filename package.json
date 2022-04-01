@@ -19,7 +19,7 @@
     "@react-navigation/native-stack": "^6.5.0",
     "@zhumi/react-native-document-scanner": "^2.4.4",
     "@zhumi/react-native-print": "^0.10.0",
-    "@zhumi/react-native-spring-scrollview": "3.0.2",
+    "@zhumi/react-native-spring-scrollview": "3.0.3",
     "react": "17.0.2",
     "react-native": "0.67.3",
     "react-native-fs": "^2.19.0",

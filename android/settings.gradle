@@ -23,5 +23,8 @@ project(':react-native-fs').projectDir = new File(settingsDir, '../node_modules/
 include ':react-native-print'
 project(':react-native-print').projectDir = new File(rootProject.projectDir,'../node_modules/@zhumi/react-native-print/android')
 
+include ':react-native-spring-scrollview'
+project(':react-native-spring-scrollview').projectDir = new File(rootProject.projectDir, '../node_modules/@zhumi/react-native-spring-scrollview/android')
+
 include ':@react-native-community_cameraroll'
 project(':@react-native-community_cameraroll').projectDir = new File(rootProject.projectDir, 	'../node_modules/@react-native-community/cameraroll/android')
