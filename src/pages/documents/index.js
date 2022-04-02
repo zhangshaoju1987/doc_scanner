@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid,Dimensions,Text } from "react-native";
+import { View, Image, ScrollView, StyleSheet, Alert, PermissionsAndroid,Dimensions,Text, TouchableOpacity } from "react-native";
 import { Colors, FAB, Portal } from "react-native-paper";
 import { connect } from "react-redux";
 import ImageView from "react-native-image-viewing";
@@ -11,7 +11,9 @@ import RNFS from "react-native-fs";
 import {detectDocument,DocumentCropper} from "@zhumi/react-native-document-scanner";
 import { launchImageLibrary} from 'react-native-image-picker';
 import {WaterfallList} from "../../components/waterfall/WaterfallList";
-import {Touchable} from "../../components"
+import Touchable from "../../components/Touchable";
+
+let _instance = null;
 /**
  * 我的发票展示
  */
@@ -23,6 +25,7 @@ class Document extends React.Component {
 			recoginzing: {}
 		}
 		this.customCrop = React.createRef();
+		_instance = this;
 	}
 	async hasAndroidPermission() {
 		const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -175,25 +178,30 @@ class Document extends React.Component {
 	}
 	_renderItem (item,index){
 		return (
-			<Touchable onPress={()=>{
-				this.setState({isVisible:true,imageIdxToShow:index});
-			}}>
-				<Image source={{ uri: item.uri }} style={{ flex: 1, margin: 5 }} />
-			</Touchable>
+			<TouchableOpacity onPress={
+				()=>{
+					console.log("in",_instance)
+					_instance.setState({isVisible:true,imageIdxToShow:index})
+				}
+			}>
+				<View style={{width:"100%",height:"100%"}}>
+					<Image source={{ uri: item.uri }} style={{ flex: 1, margin: 5 }} />
+				</View>
+			</TouchableOpacity>
+			
 		);
 	};
 	_renderHeader = () => {
 		return (
-		  <View style={{ padding: 20, alignItems: "center", backgroundColor: "red" }}>
-			<Text>I am header</Text>
+		  <View>
+			
 		  </View>
 		);
 	  };
 	
 	  _renderFooter = () => {
 		return (
-		  <View style={{ padding: 20, alignItems: "center", backgroundColor: "red" }}>
-			<Text>I am footer</Text>
+		  <View>
 		  </View>
 		);
 	  };
