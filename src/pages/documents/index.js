@@ -176,11 +176,15 @@ class Document extends React.Component {
 		store.dispatch(invoiceAction.addInvoice(this.state.document));
 		Alert.alert("消息提醒","已保存到我的文档");
 	}
+	/**
+	 * 该方法是给其他组件调用的，注意this的指向
+	 * @param {*} item 
+	 * @param {*} index 
+	 */
 	_renderItem (item,index){
 		return (
 			<TouchableOpacity onPress={
 				()=>{
-					console.log("in",_instance)
 					_instance.setState({isVisible:true,imageIdxToShow:index})
 				}
 			}>
